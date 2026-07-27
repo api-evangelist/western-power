@@ -1,0 +1,237 @@
+{
+  "objectIdFieldName" : "OBJECTID", 
+  "uniqueIdField" : 
+  {
+    "name" : "OBJECTID", 
+    "isSystemMaintained" : true
+  }, 
+  "globalIdFieldName" : "", 
+  "geometryProperties" : 
+  {
+    "shapeAreaFieldName" : "SHAPE__Area", 
+    "shapeLengthFieldName" : "SHAPE__Length", 
+    "units" : "esriMeters"
+  }, 
+  "geometryType" : "esriGeometryPolygon", 
+  "spatialReference" : {
+    "wkid" : 102100, 
+    "latestWkid" : 3857
+  }, 
+  "fields" : [
+    {
+      "name" : "OBJECTID", 
+      "type" : "esriFieldTypeOID", 
+      "alias" : "OBJECTID", 
+      "sqlType" : "sqlTypeOther", 
+      "domain" : null, 
+      "defaultValue" : null
+    }, 
+    {
+      "name" : "OUTAGETYPE", 
+      "type" : "esriFieldTypeString", 
+      "alias" : "OutageType", 
+      "sqlType" : "sqlTypeOther", 
+      "length" : 50, 
+      "domain" : null, 
+      "defaultValue" : null
+    }, 
+    {
+      "name" : "INCIDENTREF", 
+      "type" : "esriFieldTypeString", 
+      "alias" : "IncidentRef", 
+      "sqlType" : "sqlTypeOther", 
+      "length" : 50, 
+      "domain" : null, 
+      "defaultValue" : null
+    }, 
+    {
+      "name" : "ENARNUMBER", 
+      "type" : "esriFieldTypeString", 
+      "alias" : "ENARNumber", 
+      "sqlType" : "sqlTypeOther", 
+      "length" : 50, 
+      "domain" : null, 
+      "defaultValue" : null
+    }, 
+    {
+      "name" : "OUTAGESTARTTIME", 
+      "type" : "esriFieldTypeString", 
+      "alias" : "OutageStartTime", 
+      "sqlType" : "sqlTypeOther", 
+      "length" : 50, 
+      "domain" : null, 
+      "defaultValue" : null
+    }, 
+    {
+      "name" : "ESTIMATEDRESTORATIONTIME", 
+      "type" : "esriFieldTypeString", 
+      "alias" : "EstimatedRestorationTime", 
+      "sqlType" : "sqlTypeOther", 
+      "length" : 50, 
+      "domain" : null, 
+      "defaultValue" : null
+    }, 
+    {
+      "name" : "PLANNEDOUTAGE", 
+      "type" : "esriFieldTypeString", 
+      "alias" : "PlannedOutage", 
+      "sqlType" : "sqlTypeOther", 
+      "length" : 50, 
+      "domain" : null, 
+      "defaultValue" : null
+    }, 
+    {
+      "name" : "NOCUSTOMERSIMPACTED", 
+      "type" : "esriFieldTypeInteger", 
+      "alias" : "NoCustomersImpacted", 
+      "sqlType" : "sqlTypeOther", 
+      "domain" : null, 
+      "defaultValue" : null
+    }, 
+    {
+      "name" : "TIMEADDED", 
+      "type" : "esriFieldTypeDate", 
+      "alias" : "TimeAdded", 
+      "sqlType" : "sqlTypeOther", 
+      "length" : 8, 
+      "domain" : null, 
+      "defaultValue" : null
+    }, 
+    {
+      "name" : "AFFECTED_AREA", 
+      "type" : "esriFieldTypeString", 
+      "alias" : "AFFECTED_AREA", 
+      "sqlType" : "sqlTypeOther", 
+      "length" : 2000, 
+      "domain" : null, 
+      "defaultValue" : null
+    }, 
+    {
+      "name" : "AFFECTED_AREA_NOCUSTOMERS", 
+      "type" : "esriFieldTypeString", 
+      "alias" : "AFFECTED_AREA_NOCUSTOMERS", 
+      "sqlType" : "sqlTypeOther", 
+      "length" : 1200, 
+      "domain" : null, 
+      "defaultValue" : null
+    }, 
+    {
+      "name" : "Tags", 
+      "type" : "esriFieldTypeString", 
+      "alias" : "Tags", 
+      "sqlType" : "sqlTypeOther", 
+      "length" : 4000, 
+      "domain" : null, 
+      "defaultValue" : null
+    }, 
+    {
+      "name" : "SHAPE__Area", 
+      "type" : "esriFieldTypeDouble", 
+      "alias" : "SHAPE__Area", 
+      "sqlType" : "sqlTypeDouble", 
+      "domain" : null, 
+      "defaultValue" : null
+    }, 
+    {
+      "name" : "SHAPE__Length", 
+      "type" : "esriFieldTypeDouble", 
+      "alias" : "SHAPE__Length", 
+      "sqlType" : "sqlTypeDouble", 
+      "domain" : null, 
+      "defaultValue" : null
+    }
+  ], 
+  "exceededTransferLimit" : true, 
+  "features" : [
+    {
+      "attributes" : {
+        "OBJECTID" : 511287, 
+        "OUTAGETYPE" : "U", 
+        "INCIDENTREF" : "INCD-2037481-U", 
+        "ENARNUMBER" : "", 
+        "OUTAGESTARTTIME" : "31/05/2026 12:08 PM", 
+        "ESTIMATEDRESTORATIONTIME" : "01/06/2026 06:30 PM", 
+        "PLANNEDOUTAGE" : "Unplanned", 
+        "NOCUSTOMERSIMPACTED" : 134, 
+        "TIMEADDED" : 1780242311000, 
+        "AFFECTED_AREA" : "KUKERIN,MOULYINNING,NAIRIBIN,DUMBLEYUNG,NORTH KUKERIN,NORTH MOULYINNING,SOUTH KUKERIN", 
+        "AFFECTED_AREA_NOCUSTOMERS" : "70,25,13,10,9,4,3", 
+        "Tags" : "", 
+        "SHAPE__Area" : 773155328.5703125, 
+        "SHAPE__Length" : 110234.84280764995
+      }
+    }, 
+    {
+      "attributes" : {
+        "OBJECTID" : 511305, 
+        "OUTAGETYPE" : "U", 
+        "INCIDENTREF" : "INCD-2036381-U", 
+        "ENARNUMBER" : "", 
+        "OUTAGESTARTTIME" : "31/05/2026 10:29 AM", 
+        "ESTIMATEDRESTORATIONTIME" : "01/06/2026 06:30 PM", 
+        "PLANNEDOUTAGE" : "Unplanned", 
+        "NOCUSTOMERSIMPACTED" : 55, 
+        "TIMEADDED" : 1780243513000, 
+        "AFFECTED_AREA" : "RED GULLY,REGANS FORD,YATHROO,MINDARRA", 
+        "AFFECTED_AREA_NOCUSTOMERS" : "30,14,8,3", 
+        "Tags" : "", 
+        "SHAPE__Area" : 361258660.3515625, 
+        "SHAPE__Length" : 85937.540917795792
+      }
+    }, 
+    {
+      "attributes" : {
+        "OBJECTID" : 523237, 
+        "OUTAGETYPE" : "F", 
+        "INCIDENTREF" : "INCD-2020021-U", 
+        "ENARNUMBER" : "630368", 
+        "OUTAGESTARTTIME" : "27/07/2026 08:30 PM", 
+        "ESTIMATEDRESTORATIONTIME" : "28/07/2026 04:00 AM", 
+        "PLANNEDOUTAGE" : "Unplanned", 
+        "NOCUSTOMERSIMPACTED" : 53, 
+        "TIMEADDED" : 1784333117000, 
+        "AFFECTED_AREA" : "MYAREE", 
+        "AFFECTED_AREA_NOCUSTOMERS" : "53", 
+        "Tags" : "", 
+        "SHAPE__Area" : 73535.49609375, 
+        "SHAPE__Length" : 1069.2394327206459
+      }
+    }, 
+    {
+      "attributes" : {
+        "OBJECTID" : 523241, 
+        "OUTAGETYPE" : "F", 
+        "INCIDENTREF" : "INCD-475802-V", 
+        "ENARNUMBER" : "630374", 
+        "OUTAGESTARTTIME" : "27/07/2026 07:00 PM", 
+        "ESTIMATEDRESTORATIONTIME" : "28/07/2026 05:00 AM", 
+        "PLANNEDOUTAGE" : "Unplanned", 
+        "NOCUSTOMERSIMPACTED" : 15, 
+        "TIMEADDED" : 1784333118000, 
+        "AFFECTED_AREA" : "MYAREE", 
+        "AFFECTED_AREA_NOCUSTOMERS" : "15", 
+        "Tags" : "", 
+        "SHAPE__Area" : 28149.91015625, 
+        "SHAPE__Length" : 645.08649206613677
+      }
+    }, 
+    {
+      "attributes" : {
+        "OBJECTID" : 523284, 
+        "OUTAGETYPE" : "F", 
+        "INCIDENTREF" : "INCD-79043-W", 
+        "ENARNUMBER" : "635746", 
+        "OUTAGESTARTTIME" : "28/07/2026 08:00 PM", 
+        "ESTIMATEDRESTORATIONTIME" : "29/07/2026 05:00 AM", 
+        "PLANNEDOUTAGE" : "Unplanned", 
+        "NOCUSTOMERSIMPACTED" : 110, 
+        "TIMEADDED" : 1784419510000, 
+        "AFFECTED_AREA" : "GUILDFORD", 
+        "AFFECTED_AREA_NOCUSTOMERS" : "110", 
+        "Tags" : "", 
+        "SHAPE__Area" : 208233.515625, 
+        "SHAPE__Length" : 1677.7188273479294
+      }
+    }
+  ]
+}

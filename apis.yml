@@ -1,0 +1,135 @@
+aid: western-power
+url: https://raw.githubusercontent.com/api-evangelist/western-power/refs/heads/main/apis.yml
+name: Western Power
+kind: company
+description: Western Power is the Western Australian state-owned statutory corporation
+  that owns and operates the electricity transmission and distribution network — the
+  poles, wires, substations and streetlights — across the South West Interconnected
+  System (SWIS), from Kalbarri in the north to Albany in the south and east to
+  Kalgoorlie, across more than 103,000 km of powerlines, 825,788 poles and towers,
+  276,000 streetlights and 154 transmission substations. It is a regulated network
+  distributor (DNO/DSO), not a retailer and not a generator; Synergy is the SWIS
+  retailer for residential and small-business customers and AEMO operates the WA
+  Wholesale Electricity Market. Its API posture is
+  honestly minimal — there is no developer portal, no published API program and no
+  OpenAPI anywhere on westernpower.com.au (developer./api./docs./data. subdomains all
+  fail to resolve; /developers, /api, /docs, /openapi.json all return 404). Consumer
+  energy data is real but not programmatic — a third party must register a business
+  with Western Power and collect verifiable customer consent, after which up to two
+  years of interval and accumulated metering data is delivered by email or a web
+  portal, never an API. Australia's Consumer Data Right, the mandate that forced
+  identical banking APIs and was then transplanted into energy, does not reach this
+  organisation at all — CDR energy covers National Electricity Market retailers, and
+  Western Australia sits outside the NEM while distributors were never designated
+  data holders in any state. The one genuinely machine-readable surface is an
+  undocumented Esri ArcGIS Online feature service behind the public outage tracker,
+  which answers anonymous queries with live unplanned and planned outage polygons.
+  Its 36 network asset and capacity datasets are published through the WA Government
+  DataWA/SLIP portals as "open data subject to registering for access" under Western
+  Power's own data licence — WFS, WMS and ArcGIS REST endpoints that return HTTP 401
+  to an anonymous caller.
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/groq.png
+tags:
+- Energy
+- Australia
+- Utilities
+- Electricity
+- Grid
+- Network Distribution
+- Smart Metering
+- Open Data
+- GIS
+- Outages
+created: '2026-07-27'
+modified: '2026-07-27'
+specificationVersion: '0.19'
+apis:
+- aid: western-power:western-power-outage-areas-feature-service
+  name: Western Power Outage Areas Feature Service
+  description: Live outage data for the South West Interconnected System, served as
+    an Esri ArcGIS Online hosted feature service (layer 0, "Outage_Areas") that backs
+    the public Western Power outage tracker at westernpower.com.au/outages/. Western
+    Power does not document or advertise this as an API, but the service answers
+    anonymous unauthenticated requests (verified HTTP 200 on 2026-07-27), is
+    self-describing via the standard ArcGIS REST `?f=json` metadata convention, and
+    supports the Query capability with a 2,000-record page size. Each outage polygon
+    carries OUTAGETYPE, INCIDENTREF, ENARNUMBER, OUTAGESTARTTIME,
+    ESTIMATEDRESTORATIONTIME, PLANNEDOUTAGE, NOCUSTOMERSIMPACTED, TIMEADDED,
+    AFFECTED_AREA and AFFECTED_AREA_NOCUSTOMERS. No API key, token or registration is
+    required; equally, no support, SLA, terms of use or deprecation policy is
+    published for it.
+  humanURL: https://www.westernpower.com.au/outages/
+  baseURL: https://services2.arcgis.com/tBLxde4cxSlNUxsM/ArcGIS/rest/services/WP_Outage_Prod/FeatureServer
+  tags:
+  - Outages
+  - Grid
+  - GeoJSON
+  - ArcGIS
+  - Real Time
+  properties:
+  - type: ServiceMetadata
+    url: arcgis/wp-outage-featureserver.json
+  - type: ServiceMetadata
+    url: arcgis/wp-outage-layer0-outage-areas.json
+  - type: SampleResponse
+    url: arcgis/wp-outage-sample-query-response.json
+  - type: Documentation
+    url: https://www.westernpower.com.au/outages/
+- aid: western-power:western-power-public-secure-services-slip
+  name: Western Power Public Secure Services (SLIP)
+  description: Western Power's network asset and capacity spatial data — distribution
+    and transmission overhead powerlines, underground cables, poles, pillars, pits,
+    transformers, enclosures, substations, streetlights, underground power project
+    areas and the Network Capacity Mapping Tool forecast remaining-capacity layers —
+    published as 36 datasets on the WA Government DataWA catalogue and served from
+    the Landgate SLIP platform as ArcGIS REST MapServer/FeatureServer, OGC WFS and
+    OGC WMS endpoints plus GeoJSON, GeoPackage, File Geodatabase and Shapefile
+    downloads. DataWA labels these "open data subject to registering for access";
+    access is automatically granted on registering an email address and agreeing to
+    Western Power's data licence terms and conditions. Anonymous calls are rejected —
+    both the MapServer root and layer 10 returned HTTP 401 Unauthorized on 2026-07-27,
+    and the bulk download host redirects to /Account/Login. Authenticated access uses
+    Esri token authentication via token.slip.wa.gov.au.
+  humanURL: https://catalogue.data.wa.gov.au/dataset/distribution-overhead-power-lines-wp-031
+  baseURL: https://services.slip.wa.gov.au/arcgis/rest/services/WP_Public_Secure_Services/WP_Public_Secure_Services/MapServer
+  tags:
+  - Open Data
+  - GIS
+  - Grid
+  - Network Capacity
+  - WFS
+  properties:
+  - type: Catalog
+    url: catalog/datawa-western-power-datasets.json
+  - type: CatalogEntry
+    url: catalog/datawa-wp-031-distribution-overhead-powerlines.json
+  - type: Documentation
+    url: https://catalogue.data.wa.gov.au/group/about/western-power-group
+  - type: License
+    url: https://catalogue.data.wa.gov.au/dataset/wp-licence-terms-and-conditions
+  - type: Application
+    url: https://www.westernpower.com.au/resources-education/calculators-tools/network-capacity-mapping-tool/
+common:
+- type: Website
+  url: https://www.westernpower.com.au/
+- type: About
+  url: https://www.westernpower.com.au/about/
+- type: Blog
+  url: https://www.westernpower.com.au/news/
+- type: OpenData
+  url: https://catalogue.data.wa.gov.au/group/about/western-power-group
+- type: License
+  url: https://catalogue.data.wa.gov.au/dataset/wp-licence-terms-and-conditions
+- type: Documentation
+  url: https://www.westernpower.com.au/resources-education/industry-resources/retailers-and-generators/
+- type: Registration
+  url: https://www.westernpower.com.au/issues-enquiries/requests-preferences/registration-for-access-to-energy-data/
+- type: Consent
+  url: https://www.westernpower.com.au/issues-enquiries/requests-preferences/verifiable-consent-for-access-to-energy-data/
+- type: Portal
+  url: https://services.westernpower.com.au/online/nbu/do/restricted/Home
+- type: Portal
+  url: https://www.mywpprojects.westernpower.com.au/
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

@@ -1,0 +1,330 @@
+aid: western-power
+name: Western Power
+review:
+  question: Does Western Power publish a public developer API surface, and does any
+    energy data mandate reach it?
+  answer: partial
+  date: '2026-07-27'
+  reviewer: API Evangelist
+  homeMarket: Australia (Western Australia — South West Interconnected System)
+  tier: network-distributor
+  summary: >-
+    Western Power has no developer program, no developer portal and no OpenAPI. It
+    has exactly one anonymous machine-readable surface — an undocumented Esri ArcGIS
+    Online feature service that backs its public outage tracker. Its 36 network asset
+    and capacity datasets are published through WA Government portals as "open data
+    subject to registering for access" and return HTTP 401 to anonymous callers.
+    Customer energy data is available to third parties only through a business
+    registration plus verifiable customer consent, delivered by email or web portal —
+    never programmatically. Australia's Consumer Data Right, the mandate transplanted
+    from banking into energy, does not apply to this organisation.
+
+mandate:
+  regime: none
+  regimeDetail: >-
+    No consumer data right obligation reaches Western Power. The Consumer Data Right
+    was designated for the energy sector by the Treasurer in June 2020 and went live
+    for retailers in November 2022 with AEMO acting as the gateway data holder for
+    standardised NEM data. Two separate exclusions apply here, and both must hold for
+    the regime to bind. First, CDR energy applies only to the National Electricity
+    Market; Western Australia and the Northern Territory sit outside the NEM, so WA
+    energy businesses — including Synergy and Horizon Power as retailers — were never
+    designated. Second, even inside the NEM the designated data holders are
+    RETAILERS (plus AEMO as gateway), not distribution network operators. Western
+    Power is a distributor in a non-NEM jurisdiction, which places it outside CDR
+    energy on both axes. The 2024 CDR "reset" paused sector expansion, and no
+    extension of CDR energy to WA was found as of 2026-07-27.
+  status: not-applicable
+  statusEvidence: >-
+    Verified by absence and by regime scope, not by claim. Western Power makes no CDR
+    claim anywhere on westernpower.com.au (no CDR page, no accreditation statement,
+    no register reference). No CDR base URI, no Consumer Data Standards energy
+    endpoint, no /cdr/ or /cds-au/ path, and no .well-known discovery document was
+    found. There is nothing to verify because nothing was claimed — the honest and
+    important finding for a control case is that the mandate simply does not reach
+    this organisation.
+  secondaryObligation:
+    instrument: Electricity Industry (Metering) Code 2012 (Western Australia)
+    administrator: Economic Regulation Authority (ERA) of Western Australia
+    detail: >-
+      A real, in-force WA state obligation governs Western Power's metering data.
+      Western Power provides metering services to retailers under the Metering Code
+      Model Service Level Agreement, and operates a documented process for third
+      parties to obtain a customer's consumption data with verifiable consent. This
+      is a metering-code data-provision duty, NOT a consumer data right — there is no
+      accreditation regime, no standardised API schema, no register of recipients and
+      no machine interface of any kind. The obligation is discharged with a web form,
+      a consent form, and delivery by email or a web portal. A mandate exists; an
+      implementation, in the API sense, does not.
+    verified: >-
+      Fetched the third-party registration page and the verifiable-consent page
+      (both HTTP 200, 2026-07-27). Registration collects business name, ABN, business
+      type, contact and invoice details plus CAPTCHA, and asks whether data should be
+      provided by EMAIL or WEB PORTAL. Consent covers electricity usage and load data,
+      meter types and models, kWh, kVA and other interval and accumulated data, with
+      up to two years of history, delivered "as published to the retailer" (about one
+      business day to the web portal), monthly, or on manual request. Neither page
+      mentions an API, B2B messaging, aseXML, file transfer, or any data format.
+  notAssessedRegimes:
+    - regime: green-button-ontario
+      applies: false
+      reason: Ontario regulation; no relevance to a Western Australian distributor.
+    - regime: green-button-voluntary
+      applies: false
+      reason: No Green Button or ESPI reference found on westernpower.com.au.
+    - regime: smart-meter-infrastructure
+      applies: false
+      reason: >-
+        Western Power runs an Advanced Metering Infrastructure (AMI) meter rollout and
+        publishes an AMI page, but WA has no UK-DCC-style central smart metering data
+        communications body and no shared data infrastructure mandate. AMI here is an
+        asset replacement program, not a data access regime.
+
+dataStandard:
+  name: no standard reference found
+  detail: >-
+    No Green Button / ESPI, no CDR Consumer Data Standards (energy), no IEEE 2030.5,
+    no OpenADR, no OCPP/OCPI, and no IEC CIM 61968/61970 reference was found on
+    westernpower.com.au or in the DataWA catalogue entries. The only standards
+    actually in play are geospatial and vendor conventions, not energy data
+    standards — Esri ArcGIS REST for the outage and SLIP services, plus OGC WFS and
+    WMS endpoints and GeoJSON/GeoPackage/Shapefile/File Geodatabase distributions on
+    the DataWA-catalogued SLIP services.
+
+consumerVsMarketData:
+  consumerDataAPI: false
+  consumerDataDetail: >-
+    Customer usage and interval data exists and is obtainable by a third party, but
+    not through any API. The route is: register the business with Western Power
+    (name, ABN, business type, invoicing), obtain verifiable written consent from the
+    customer naming meter details and access parameters, then receive data by email or
+    through a Western Power web portal. No documented endpoint, no OAuth, no scopes,
+    no schema, no accreditation. Retailers transact with Western Power through a
+    restricted online Retailer & Generator portal for customer detail changes,
+    metering requests and service orders — a web application, with no public API or
+    interface control document published.
+  marketDataOpen: true
+  marketDataDetail: >-
+    Two very different surfaces, and the distinction is the finding. (1) TRULY
+    ANONYMOUS but undocumented — the live outage feature service at
+    services2.arcgis.com/tBLxde4cxSlNUxsM/ArcGIS/rest/services/WP_Outage_Prod/FeatureServer
+    answered unauthenticated requests with HTTP 200 for service metadata, layer
+    metadata and a /query call returning live outage records (incident reference,
+    planned vs unplanned, start time, estimated restoration time, customers impacted,
+    affected suburbs). Western Power never advertises this as an API; it is the
+    backing service of the public outage map, discovered in the page source of
+    /outages/. (2) GATED "OPEN DATA" — 36 Western Power datasets are catalogued on
+    catalogue.data.wa.gov.au and served from Landgate's SLIP platform, but DataWA
+    marks them access_level "open_login" and states they are "published as open data
+    subject to registering for access"; anonymous calls to the SLIP MapServer root and
+    to layer 10 both returned HTTP 401 Unauthorized, and data-downloads.slip.wa.gov.au
+    redirects to /Account/Login. So the distributor's asset and capacity data — poles,
+    powerlines, cables, substations, streetlights, and the Network Capacity Mapping
+    Tool forecast remaining-capacity layers out to 2035 — is discoverable openly and
+    downloadable only behind a registered account and Western Power's own data licence.
+    Wholesale market data for the region is published by AEMO for the WA Wholesale
+    Electricity Market, not by Western Power.
+
+accessGate:
+  gate: licence-agreement
+  detail: >-
+    There is no self-serve developer signup because there is no developer program.
+    What a developer must actually do, per surface. OUTAGE FEED — nothing; call the
+    ArcGIS REST endpoint anonymously, accepting that it is undocumented, unsupported
+    and may change or disappear without notice. NETWORK/CAPACITY DATA — create a SLIP
+    account on the WA Government platform, register an email address (DataWA states
+    access is "automatically granted to users who register and provide their email
+    address"), and agree to Western Power's Data Licence Terms and Conditions
+    published at catalogue.data.wa.gov.au/dataset/wp-licence-terms-and-conditions;
+    then use Esri token authentication via token.slip.wa.gov.au or download files.
+    CUSTOMER ENERGY DATA — register as a third party with Western Power using the
+    business form, then submit verifiable customer consent per meter; there is no
+    programmatic delivery at the end of it. RETAILER/GENERATOR TRANSACTIONS — a
+    commercial and regulatory relationship plus credentials for the restricted
+    services.westernpower.com.au portal.
+
+authModel:
+  publicOutageService: none — anonymous, unauthenticated HTTPS GET (verified 200)
+  slipServices: Esri token authentication (token.slip.wa.gov.au) after SLIP account registration
+  bulkDownloads: session login at data-downloads.slip.wa.gov.au (302 to /Account/Login)
+  consumerData: no machine auth — manual registration plus verifiable customer consent
+  retailerPortal: username/password login to a restricted web portal
+  openidConfiguration: >-
+    https://www.westernpower.com.au/.well-known/openid-configuration returned HTTP 404
+    on 2026-07-27. No OpenID Connect discovery document is served.
+
+probes:
+  date: '2026-07-27'
+  results:
+    - url: https://westernpower.com.au
+      status: 200
+    - url: https://www.westernpower.com.au
+      status: 200
+    - url: https://developer.westernpower.com.au
+      status: 000
+      note: DNS does not resolve
+    - url: https://developers.westernpower.com.au
+      status: 000
+      note: DNS does not resolve
+    - url: https://api.westernpower.com.au
+      status: 000
+      note: DNS does not resolve
+    - url: https://docs.westernpower.com.au
+      status: 000
+      note: DNS does not resolve
+    - url: https://data.westernpower.com.au
+      status: 000
+      note: DNS does not resolve
+    - url: https://opendata.westernpower.com.au
+      status: 000
+      note: DNS does not resolve
+    - url: https://spatial.westernpower.com.au
+      status: 000
+    - url: https://gis.westernpower.com.au
+      status: 000
+    - url: https://maps.westernpower.com.au
+      status: 000
+    - url: https://portal.westernpower.com.au
+      status: 000
+    - url: https://connect.westernpower.com.au
+      status: 000
+    - url: https://www.westernpower.com.au/developers
+      status: 404
+    - url: https://www.westernpower.com.au/api
+      status: 404
+    - url: https://www.westernpower.com.au/docs
+      status: 404
+    - url: https://www.westernpower.com.au/data
+      status: 404
+    - url: https://www.westernpower.com.au/open-data
+      status: 404
+    - url: https://www.westernpower.com.au/openapi.json
+      status: 404
+    - url: https://www.westernpower.com.au/swagger.json
+      status: 404
+    - url: https://www.westernpower.com.au/api-docs
+      status: 404
+    - url: https://www.westernpower.com.au/.well-known/openid-configuration
+      status: 404
+    - url: https://www.westernpower.com.au/sitemap.xml
+      status: 200
+      note: 868 URLs; scanned for api/developer/data/metering paths — no developer or API page exists
+    - url: https://www.westernpower.com.au/outages/
+      status: 200
+      note: page source references the ArcGIS outage feature service
+    - url: https://services2.arcgis.com/tBLxde4cxSlNUxsM/ArcGIS/rest/services/WP_Outage_Prod/FeatureServer?f=json
+      status: 200
+      note: anonymous; harvested verbatim to arcgis/wp-outage-featureserver.json
+    - url: https://services2.arcgis.com/tBLxde4cxSlNUxsM/ArcGIS/rest/services/WP_Outage_Prod/FeatureServer/0?f=json
+      status: 200
+      note: anonymous; layer 0 "Outage_Areas"; harvested to arcgis/wp-outage-layer0-outage-areas.json
+    - url: https://services2.arcgis.com/tBLxde4cxSlNUxsM/ArcGIS/rest/services/WP_Outage_Prod/FeatureServer/0/query?where=1=1&outFields=*&returnGeometry=false&resultRecordCount=5&f=json
+      status: 200
+      note: anonymous; live outage records returned; harvested to arcgis/wp-outage-sample-query-response.json
+    - url: https://services.slip.wa.gov.au/arcgis/rest/services/WP_Public_Secure_Services/WP_Public_Secure_Services/MapServer?f=json
+      status: 401
+      note: anonymous access rejected
+    - url: https://services.slip.wa.gov.au/arcgis/rest/services/WP_Public_Secure_Services/WP_Public_Secure_Services/MapServer/10?f=json
+      status: 401
+      note: anonymous access rejected
+    - url: https://data-downloads.slip.wa.gov.au/WP-031/GeoJSON
+      status: 302
+      note: redirects to /Account/Login
+    - url: https://catalogue.data.wa.gov.au/api/3/action/package_search?q=author:"Western Power"&rows=40
+      status: 200
+      note: 36 datasets authored by Western Power; harvested to catalog/datawa-western-power-datasets.json
+    - url: https://catalogue.data.wa.gov.au/api/3/action/package_show?id=distribution-overhead-power-lines-wp-031
+      status: 200
+      note: access_level "open_login"; harvested to catalog/datawa-wp-031-distribution-overhead-powerlines.json
+    - url: https://www.westernpower.com.au/issues-enquiries/requests-preferences/registration-for-access-to-energy-data/
+      status: 200
+    - url: https://www.westernpower.com.au/issues-enquiries/requests-preferences/verifiable-consent-for-access-to-energy-data/
+      status: 200
+    - url: https://www.westernpower.com.au/resources-education/industry-resources/retailers-and-generators/
+      status: 200
+      note: restricted retailer/generator portal; standards and Build Pack documents; no API, no aseXML/B2B interface published
+    - url: https://www.westernpower.com.au/resources-education/manuals-guidelines-and-standards/metering-code/
+      status: 200
+      note: Electricity Industry (Metering) Code 2012 and Metering Code Model SLA
+    - url: https://westernpower.opendata.arcgis.com
+      status: 200
+      note: generic ArcGIS Hub landing page, NOT a Western Power hub; dcat feed returned 404
+    - url: https://www.westernpower.com.au/favicon.ico
+      status: 404
+      note: favicon served from a hashed /static path instead
+
+artifacts:
+  openapi:
+    harvested: false
+    count: 0
+    note: No OpenAPI, Swagger, RAML, or Postman collection exists for any Western Power surface.
+  harvested:
+    - path: arcgis/wp-outage-featureserver.json
+      source: https://services2.arcgis.com/tBLxde4cxSlNUxsM/ArcGIS/rest/services/WP_Outage_Prod/FeatureServer?f=pjson
+      fetched: '2026-07-27'
+      httpStatus: 200
+      type: Esri ArcGIS REST FeatureServer metadata (verbatim)
+    - path: arcgis/wp-outage-layer0-outage-areas.json
+      source: https://services2.arcgis.com/tBLxde4cxSlNUxsM/ArcGIS/rest/services/WP_Outage_Prod/FeatureServer/0?f=pjson
+      fetched: '2026-07-27'
+      httpStatus: 200
+      type: Esri ArcGIS REST layer metadata, field-level schema (verbatim)
+    - path: arcgis/wp-outage-sample-query-response.json
+      source: https://services2.arcgis.com/tBLxde4cxSlNUxsM/ArcGIS/rest/services/WP_Outage_Prod/FeatureServer/0/query?where=1=1&outFields=*&returnGeometry=false&resultRecordCount=5&f=pjson
+      fetched: '2026-07-27'
+      httpStatus: 200
+      type: live query response snapshot, evidence of anonymous access (verbatim)
+    - path: catalog/datawa-western-power-datasets.json
+      source: https://catalogue.data.wa.gov.au/api/3/action/package_search?q=author:"Western Power"&rows=40
+      fetched: '2026-07-27'
+      httpStatus: 200
+      type: CKAN package_search result, 36 Western Power datasets (verbatim)
+    - path: catalog/datawa-wp-031-distribution-overhead-powerlines.json
+      source: https://catalogue.data.wa.gov.au/api/3/action/package_show?id=distribution-overhead-power-lines-wp-031
+      fetched: '2026-07-27'
+      httpStatus: 200
+      type: CKAN package_show, one dataset with WFS/WMS/ArcGIS/GeoJSON resource endpoints (verbatim)
+
+findings:
+  developerPortal: none
+  developerPortalConfirmed: false
+  apisListed: 2
+  gated: true
+  notes: >-
+    Western Power is the control case's control case. Australia proved a statutory
+    data mandate is transplantable — the CDR moved from banking into energy with the
+    same regulator, the same Data Standards Body and AEMO as gateway — and this
+    organisation shows the precise shape of the hole that transplant left. It is an
+    Australian energy business that the Australian energy data mandate does not touch,
+    because CDR energy binds retailers inside the National Electricity Market and
+    Western Power is a distributor outside it. What fills the vacuum is instructive: a
+    state metering code that obliges data provision but specifies no interface, so the
+    duty is met by a consent form and a web portal; an "open data" program whose
+    openness stops at a login; and the only real machine-readable surface arriving by
+    accident, as the undocumented ArcGIS service behind a public outage map.
+
+sources:
+  - url: https://www.westernpower.com.au/
+    type: Website
+    note: Corporate site; no developer or API section anywhere in the 868-URL sitemap.
+  - url: https://www.westernpower.com.au/outages/
+    type: Application
+    note: Public outage tracker; page source exposes the anonymous ArcGIS feature service.
+  - url: https://catalogue.data.wa.gov.au/group/about/western-power-group
+    type: OpenData
+    note: DataWA group listing Western Power's catalogued datasets.
+  - url: https://catalogue.data.wa.gov.au/dataset/wp-licence-terms-and-conditions
+    type: License
+    note: Western Power Data Licence Terms and Conditions, binding on all catalogued data use.
+  - url: https://www.westernpower.com.au/issues-enquiries/requests-preferences/registration-for-access-to-energy-data/
+    type: Registration
+    note: Third-party registration for customer consumption data; email or web portal delivery.
+  - url: https://www.westernpower.com.au/issues-enquiries/requests-preferences/verifiable-consent-for-access-to-energy-data/
+    type: Consent
+    note: Verifiable consent workflow; interval and accumulated data, up to two years history.
+  - url: https://www.westernpower.com.au/resources-education/calculators-tools/network-capacity-mapping-tool/
+    type: Application
+    note: Network Capacity Mapping Tool; requires a registered SLIP account to use.
+  - url: https://www.cdr.gov.au/rollout/cdr-energy-sector
+    type: Regulation
+    note: CDR energy rollout scope; NEM retailers with AEMO as gateway data holder.
