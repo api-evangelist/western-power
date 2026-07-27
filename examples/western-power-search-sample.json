@@ -1,0 +1,46 @@
+{
+  "outage": {
+    "errorMessage": null,
+    "suburb": null,
+    "inflightOutageCount": 0,
+    "resolvedOutageCount": 0,
+    "affectedCustomers": 0,
+    "outageId": null,
+    "restorationTimeFormatted": null,
+    "restoredOutageId": null,
+    "resolvedRestorationTimeFormatted": null,
+    "plannedOutageCount": 0,
+    "plannedOutageId": null,
+    "plannedOutageTimeFormatted": null,
+    "inflightPlannedOutageCount": 0,
+    "inflightUnPlannedOutagesCount": 0
+  },
+  "totalMatching": 262,
+  "currentPage": 1,
+  "searchTerm": "outage",
+  "didYouMean": "",
+  "hits": [
+    {
+      "title": "Power <em>outage</em>",
+      "description": "Find out if your area is having an <em>outage</em>, or report one ",
+      "url": "https://www.westernpower.com.au/outages/?_sqt=outage",
+      "badge": "",
+      "additionalInformation": ""
+    },
+    {
+      "title": "<em>Outage</em> updates",
+      "description": "View our latest updates ... on power <em>outages</em> related to recent bushfires and weather conditions. Quick links: Register your property for SMS updates View our power <em>outage</em> checker for ... for estimated restoration times Customers with <em>outages</em> longer than 12 hours can apply for an extended <em>outage</em> payment",
+      "url": "https://www.westernpower.com.au/news/outage-updates/?_sqt=outage",
+      "badge": "NEWS",
+      "additionalInformation": "FEB 7, 2022"
+    },
+    {
+      "title": "Customer damage claim",
+      "description": "Need <em>outage</em> information for your property to support an insurance claim?\u00a0Request <em>outage</em> information.",
+      "url": "https://www.westernpower.com.au/issues-enquiries/make-a-claim/customer-damage/customer-damage-claim/?_sqt=outage",
+      "badge": "",
+      "additionalInformation": ""
+    }
+  ],
+  "types": []
+}

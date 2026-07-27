@@ -11,24 +11,30 @@ description: Western Power is the Western Australian state-owned statutory corpo
   distributor (DNO/DSO), not a retailer and not a generator; Synergy is the SWIS
   retailer for residential and small-business customers and AEMO operates the WA
   Wholesale Electricity Market. Its API posture is
-  honestly minimal — there is no developer portal, no published API program and no
-  OpenAPI anywhere on westernpower.com.au (developer./api./docs./data. subdomains all
-  fail to resolve; /developers, /api, /docs, /openapi.json all return 404). Consumer
-  energy data is real but not programmatic — a third party must register a business
-  with Western Power and collect verifiable customer consent, after which up to two
-  years of interval and accumulated metering data is delivered by email or a web
-  portal, never an API. Australia's Consumer Data Right, the mandate that forced
+  honestly minimal — there is no developer portal, no published API program, no
+  developer documentation and no published OpenAPI anywhere on westernpower.com.au
+  (developer./api./docs./data. subdomains all fail to resolve; /developers, /docs and
+  /openapi.json all return 404). It is nonetheless not API-less. Three anonymous
+  machine-readable surfaces were verified on 2026-07-27 — an undocumented first-party
+  JSON API at westernpower.com.au/api/corp/outage/* that backs the public outage
+  tracker and returns every current and upcoming outage, one outage with hazard flags
+  and update history, and a per-suburb rollup; an Esri ArcGIS Online feature service
+  serving the same outages as polygons with SQL, spatial and statistical query; and
+  the corporate site's own search, news and vacancy endpoints. All are internal
+  endpoints of Western Power's web applications — robots.txt disallows /api/ — with
+  no reference, no terms of use, no versioning, no SLA and no support channel.
+  Consumer energy data is real but not programmatic — a third party must register a
+  business with Western Power and collect verifiable customer consent, after which up
+  to two years of interval and accumulated metering data is delivered by email or a
+  web portal, never an API. Australia's Consumer Data Right, the mandate that forced
   identical banking APIs and was then transplanted into energy, does not reach this
   organisation at all — CDR energy covers National Electricity Market retailers, and
   Western Australia sits outside the NEM while distributors were never designated
-  data holders in any state. The one genuinely machine-readable surface is an
-  undocumented Esri ArcGIS Online feature service behind the public outage tracker,
-  which answers anonymous queries with live unplanned and planned outage polygons.
-  Its 36 network asset and capacity datasets are published through the WA Government
-  DataWA/SLIP portals as "open data subject to registering for access" under Western
-  Power's own data licence — WFS, WMS and ArcGIS REST endpoints that return HTTP 401
-  to an anonymous caller.
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/groq.png
+  data holders in any state. Its 36 network asset and capacity datasets are published
+  through the WA Government DataWA/SLIP portals as "open data subject to registering
+  for access" under Western Power's own data licence — WFS, WMS and ArcGIS REST
+  endpoints that return HTTP 401 to an anonymous caller.
+image: https://www.westernpower.com.au/faviconImages/apple-touch-icon.png
 tags:
 - Energy
 - Australia
@@ -44,6 +50,81 @@ created: '2026-07-27'
 modified: '2026-07-27'
 specificationVersion: '0.19'
 apis:
+- aid: western-power:western-power-outage-web-api
+  name: Western Power Outage Web API
+  description: The undocumented first-party JSON API behind the public Western Power
+    outage tracker. The outage page declares its own endpoints in markup —
+    all-outages-endpoint="/api/corp/outage/all-outages" and
+    single-outage-endpoint="/api/corp/outage/details/" — and all three operations
+    answer anonymous unauthenticated HTTPS GET with application/json (verified HTTP
+    200 on 2026-07-27). listAllOutages returns every current and upcoming outage as a
+    bare unpaginated array (211 records, 61 KB observed) with incident reference,
+    planned/unplanned type, start and estimated restoration times, customers impacted,
+    affected suburbs and a centroid. getOutageDetails adds an update history and
+    bushfire, total-fire-ban, weather and fire-weather-warning hazard flags, answering
+    an unknown identifier with HTTP 204 rather than 404. getSuburbOutageStatus returns
+    a per-suburb rollup and never signals an error. Western Power publishes no
+    reference, no terms of use, no versioning, no rate limits, no SLA and no support
+    channel for any of it, and robots.txt disallows /api/ to crawlers. The OpenAPI
+    below was derived by API Evangelist from live probes, not published by the
+    provider.
+  humanURL: https://www.westernpower.com.au/outages/
+  baseURL: https://www.westernpower.com.au/api/corp/outage
+  tags:
+  - Outages
+  - Grid
+  - Real Time
+  - Electricity
+  - JSON
+  properties:
+  - type: OpenAPI
+    name: OpenAPI 3.1 (derived by API Evangelist from live probes)
+    url: openapi/western-power-outage-openapi.yml
+  - type: Overlay
+    url: overlays/western-power-outage-overlay.yaml
+  - type: Examples
+    name: Live sample responses captured 2026-07-27
+    url: examples/western-power-all-outages-sample.json
+  - type: Examples
+    url: examples/western-power-outage-details-sample.json
+  - type: Examples
+    url: examples/western-power-outage-status-sample.json
+  - type: AgentSkill
+    name: Check Western Power outages
+    url: skills/western-power-check-outages.md
+  - type: Documentation
+    url: https://www.westernpower.com.au/outages/
+- aid: western-power:western-power-corporate-web-api
+  name: Western Power Corporate Web API
+  description: The anonymous read endpoints behind westernpower.com.au itself — site
+    search, the news article feed and the careers vacancy feed. These are internal
+    endpoints of the Optimizely/EPiServer corporate site, declared in the site's own
+    JavaScript bundle and reachable without authentication (verified HTTP 200 on
+    2026-07-27). /api/search is backed by Optimizely Find and returns paged hits, a
+    did-you-mean suggestion, content-type facets and — unusually — an embedded suburb
+    outage rollup so a search box can surface outage status inline. /api/corp/vacancies
+    and /api/corp/newsarticles serve the careers and newsroom listings. robots.txt
+    disallows /api/, and Western Power publishes no documentation, terms of use or SLA
+    for these endpoints. The OpenAPI below was derived by API Evangelist from live
+    probes and from parameter names read out of the site's client bundle.
+  humanURL: https://www.westernpower.com.au/
+  baseURL: https://www.westernpower.com.au/api
+  tags:
+  - Search
+  - Content
+  - Careers
+  - News
+  - JSON
+  properties:
+  - type: OpenAPI
+    name: OpenAPI 3.1 (derived by API Evangelist from live probes)
+    url: openapi/western-power-corporate-web-openapi.yml
+  - type: Overlay
+    url: overlays/western-power-corporate-web-overlay.yaml
+  - type: Examples
+    url: examples/western-power-search-sample.json
+  - type: Examples
+    url: examples/western-power-vacancies-sample.json
 - aid: western-power:western-power-outage-areas-feature-service
   name: Western Power Outage Areas Feature Service
   description: Live outage data for the South West Interconnected System, served as
@@ -67,6 +148,14 @@ apis:
   - ArcGIS
   - Real Time
   properties:
+  - type: OpenAPI
+    name: OpenAPI 3.1 (derived by API Evangelist from harvested ArcGIS metadata)
+    url: openapi/western-power-arcgis-outage-openapi.yml
+  - type: Overlay
+    url: overlays/western-power-arcgis-outage-overlay.yaml
+  - type: AgentSkill
+    name: Query Western Power outage geography
+    url: skills/western-power-query-outage-geography.md
   - type: ServiceMetadata
     url: arcgis/wp-outage-featureserver.json
   - type: ServiceMetadata
@@ -110,6 +199,48 @@ apis:
   - type: Application
     url: https://www.westernpower.com.au/resources-education/calculators-tools/network-capacity-mapping-tool/
 common:
+- type: AgenticAccess
+  url: agentic-access/western-power-agentic-access.yml
+- type: DomainSecurity
+  url: security/western-power-domain-security.yml
+- type: Authentication
+  name: Authentication profile — anonymous, Esri token, session login
+  url: authentication/western-power-authentication.yml
+- type: Conventions
+  name: API conventions — pagination, date formats, caching, rate limiting
+  url: conventions/western-power-conventions.yml
+- type: ErrorCatalog
+  name: Error behaviour — three inconsistent idioms, 204-as-not-found
+  url: errors/western-power-problem-types.yml
+- type: Lifecycle
+  name: Lifecycle — no versioning, no deprecation policy, no SLA
+  url: lifecycle/western-power-lifecycle.yml
+- type: Conformance
+  name: Standards conformance — geospatial only, no energy data standard
+  url: conformance/western-power-conformance.yml
+- type: DataModel
+  name: Data model — one Outage entity projected two incompatible ways
+  url: data-model/western-power-data-model.yml
+- type: WellKnown
+  name: /.well-known/ discovery probe — every path 404
+  url: well-known/western-power-well-known.yml
+- type: Packages
+  name: Client libraries — none published (probed negative)
+  url: packages/western-power-packages.yml
+- type: LLMsTxt
+  url: llms/western-power-llms.txt
+- type: AgentSkill
+  name: Agent skills index
+  url: skills/_index.yml
+- type: GitHubOrganization
+  name: GitHub organisation (verified, 0 public repositories)
+  url: https://github.com/Western-Power
+- type: TermsOfService
+  url: https://www.westernpower.com.au/terms--conditions/
+- type: PrivacyPolicy
+  url: https://www.westernpower.com.au/privacy-policy/
+- type: Support
+  url: https://www.westernpower.com.au/about/contact-us/
 - type: Website
   url: https://www.westernpower.com.au/
 - type: About

@@ -1,0 +1,265 @@
+openapi: 3.1.0
+info:
+  title: Western Power Outage Web API
+  version: '2026.7.7.1'
+  description: >-
+    The undocumented but anonymous first-party JSON API that backs the public
+    Western Power outage tracker at westernpower.com.au/outages/. The outage page
+    declares its own endpoints in markup —
+    `all-outages-endpoint="/api/corp/outage/all-outages"` and
+    `single-outage-endpoint="/api/corp/outage/details/"` — and both answer
+    unauthenticated HTTPS GET requests with `application/json`. Western Power
+    publishes no developer portal, no reference documentation, no terms of use and
+    no SLA for this surface. This description was DERIVED BY API EVANGELIST from
+    live probes on 2026-07-27; it is not published by Western Power, and the
+    provider may change or withdraw these endpoints without notice.
+  x-apievangelist-provenance:
+    method: derived
+    derived_by: API Evangelist
+    derived_from: live HTTP probes of https://www.westernpower.com.au/api/corp/outage/*
+    probe_date: '2026-07-27'
+    provider_published: false
+    note: >-
+      Every path, parameter, status code and response field below was observed in a
+      real HTTP response. Nothing here is inferred from vendor documentation, because
+      none exists.
+  contact:
+    name: Western Power
+    url: https://www.westernpower.com.au/contact-us/
+  x-version-header: >-
+    The site returns an AssemblyFileVersion/Build Number comment (2026.7.7.1 on
+    2026-07-27) in its HTML; the API itself carries no version identifier.
+servers:
+  - url: https://www.westernpower.com.au/api/corp/outage
+    description: Production (Cloudflare-fronted, anonymous)
+tags:
+  - name: Outages
+    description: Live planned and unplanned outage data for the South West Interconnected System.
+paths:
+  /all-outages:
+    get:
+      tags: [Outages]
+      operationId: listAllOutages
+      summary: List all current and upcoming outages
+      description: >-
+        Returns every outage record the outage tracker plots — planned (`F`) and
+        unplanned (`U`) — as a flat JSON array with no pagination and no envelope.
+        Observed 211 records and a 61 KB payload on 2026-07-27. Takes no parameters.
+      responses:
+        '200':
+          description: Array of outage summary records.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OutageSummary'
+              example:
+                - outageId: INCD-2015011-U
+                  outageType: F
+                  startTime: '20260728T190000+08:00'
+                  restorationTime: '20260729T050000+08:00'
+                  onMap: true
+                  outageUpdatedTime: '20260718T160020+00:00'
+                  affectedCustomers: 126
+                  areas: [BOORAGOON]
+                  latitudeCentroid: -32.03583
+                  longitudeCentroid: 115.83067
+  /details/{outageId}:
+    get:
+      tags: [Outages]
+      operationId: getOutageDetails
+      summary: Get one outage with tracker presentation detail
+      description: >-
+        Returns the full outage record plus the content the tracker renders around
+        it — related FAQ links, the add-to-calendar modal copy, an update
+        `historyGroup`, and bushfire / total-fire-ban / weather / fire-weather-warning
+        impact flags. An unknown identifier returns HTTP 204 with an empty body
+        rather than 404.
+      parameters:
+        - name: outageId
+          in: path
+          required: true
+          description: Outage identifier as returned by `listAllOutages`, e.g. `INCD-2015011-U`.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Outage detail record.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutageDetail'
+        '204':
+          description: >-
+            No content — the identifier did not match an outage. Observed for
+            `/details/NOPE-123` on 2026-07-27.
+  /status/{suburb}:
+    get:
+      tags: [Outages]
+      operationId: getSuburbOutageStatus
+      summary: Get outage counts for a suburb
+      description: >-
+        Returns a rolled-up outage status for a suburb name — in-flight, resolved
+        and planned counts, affected customers, and a human-readable restoration
+        or planned-outage message. Accepts a comma-separated list, of which the
+        client uses the first value. Unmatched names return zeroed counts with the
+        submitted name title-cased in `suburb`, never an error status.
+      parameters:
+        - name: suburb
+          in: path
+          required: true
+          description: Suburb name, e.g. `BOORAGOON`. Case-insensitive.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Suburb outage status rollup.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuburbOutageStatus'
+components:
+  schemas:
+    OutageSummary:
+      type: object
+      description: One outage as plotted on the public outage map.
+      properties:
+        outageId:
+          type: string
+          description: Incident reference, e.g. `INCD-2015011-U`.
+        outageType:
+          type: string
+          description: >-
+            Observed values `F` (planned/future works, 208 of 211 records on
+            2026-07-27) and `U` (unplanned, 3 records). Western Power publishes no
+            code list; these are the only values seen.
+          examples: [F, U]
+        startTime:
+          type: string
+          description: Outage start, basic-format ISO 8601 with AWST offset, e.g. `20260728T190000+08:00`.
+        restorationTime:
+          type: string
+          description: Estimated restoration, same format as `startTime`.
+        onMap:
+          type: boolean
+          description: Whether the outage is plotted on the public map.
+        outageUpdatedTime:
+          type: string
+          description: Last update, basic-format ISO 8601, observed in UTC (`+00:00`).
+        affectedCustomers:
+          type: integer
+          description: Number of customers impacted.
+        areas:
+          type: array
+          description: Affected suburb / locality names, upper case.
+          items:
+            type: string
+        latitudeCentroid:
+          type: number
+          format: double
+        longitudeCentroid:
+          type: number
+          format: double
+      required:
+        - outageId
+        - outageType
+        - startTime
+        - restorationTime
+        - onMap
+        - outageUpdatedTime
+        - affectedCustomers
+        - areas
+        - latitudeCentroid
+        - longitudeCentroid
+    OutageDetail:
+      type: object
+      description: >-
+        `OutageSummary` plus the presentation payload the tracker renders. Content
+        fields carry HTML strings and may be null.
+      allOf:
+        - $ref: '#/components/schemas/OutageSummary'
+      properties:
+        moreInformationList:
+          type: array
+          items:
+            type: object
+            properties:
+              title:
+                type: string
+              url:
+                type: string
+        calendarModal:
+          type: object
+          description: Add-to-calendar modal copy and steps.
+        extendedOutageCurrent:
+          type: boolean
+        historyGroup:
+          type: array
+          description: Dated update history for the outage.
+          items:
+            type: object
+        tags:
+          type: array
+          items:
+            type: string
+        mayBeImpactedByBushfire:
+          type: boolean
+        mayBeImpactedByTotalFireBan:
+          type: boolean
+        mayBeImpactedByWeather:
+          type: boolean
+        mayBeImpactedByFireWeatherWarning:
+          type: boolean
+        bushfireCoordinates:
+          type: array
+          items:
+            type: object
+        activeIncidentsThatMayImpactOutageHeading:
+          type: [string, 'null']
+        activeIncidentsThatMayImpactOutageDescription:
+          type: [string, 'null']
+        activeIncidentsViewMoreLabel:
+          type: [string, 'null']
+        activeIncidentsViewMoreUrl:
+          type: [string, 'null']
+        fireWeatherWarningTagToMatch:
+          type: [string, 'null']
+    SuburbOutageStatus:
+      type: object
+      properties:
+        errorMessage:
+          type: [string, 'null']
+          description: >-
+            The only error channel this API exposes. Observed null on every probe;
+            HTTP status stays 200 regardless of whether the suburb matched.
+        suburb:
+          type: [string, 'null']
+          description: Echo of the submitted suburb, title-cased.
+        inflightOutageCount:
+          type: integer
+        resolvedOutageCount:
+          type: integer
+        affectedCustomers:
+          type: integer
+        outageId:
+          type: [string, 'null']
+        restorationTimeFormatted:
+          type: [string, 'null']
+        restoredOutageId:
+          type: [string, 'null']
+        resolvedRestorationTimeFormatted:
+          type: [string, 'null']
+        plannedOutageCount:
+          type: integer
+        plannedOutageId:
+          type: [string, 'null']
+        plannedOutageTimeFormatted:
+          type: [string, 'null']
+          description: >-
+            Human-readable sentence, e.g. "There are multiple planned outages in
+            your area in the next ten days."
+        inflightPlannedOutageCount:
+          type: integer
+        inflightUnPlannedOutagesCount:
+          type: integer

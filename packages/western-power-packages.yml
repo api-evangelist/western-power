@@ -1,0 +1,26 @@
+generated: '2026-07-27'
+method: searched
+source: registry searches 2026-07-27
+summary: >-
+  Western Power ships no client libraries. There is no first-party SDK in any
+  language and no third-party wrapper of the outage endpoints was found either.
+  Recorded as a probed negative — no SDKs pointer is emitted, because none exists.
+registries_probed:
+- registry: npm
+  query: western power outage
+  result: no relevant package (matches were unrelated "power-assert" packages)
+- registry: pypi
+  query: westernpower
+  result: 404
+- registry: pypi
+  query: western-power
+  result: 404
+- registry: github
+  query: westernpower outage (repository search)
+  result: no repositories
+- registry: github
+  query: github.com/Western-Power (verified organisation)
+  result: >-
+    Organisation exists and is genuinely Western Power's (blog field points at
+    westernpower.com.au, created 2021-07-12) but has 0 public repositories.
+packages: []

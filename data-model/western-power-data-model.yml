@@ -1,0 +1,121 @@
+generated: '2026-07-27'
+method: derived
+source:
+- openapi/western-power-outage-openapi.yml
+- openapi/western-power-arcgis-outage-openapi.yml
+- openapi/western-power-corporate-web-openapi.yml
+- arcgis/wp-outage-layer0-outage-areas.json
+- catalog/datawa-western-power-datasets.json
+summary: >-
+  Western Power's public data model is one entity — an outage — projected twice,
+  once as a JSON record on the corporate web API and once as a polygon feature on
+  the Esri feature service. The two projections describe the same real-world events
+  with different field names, different identifiers and different geometry, and
+  neither references the other. Everything else (network assets, capacity) sits
+  behind the SLIP login as GIS layers.
+entities:
+- name: Outage
+  surface: western-power-outage-web-api
+  id_field: outageId
+  id_format: >-
+    "INCD-" + numeric incident number + "-" + a single letter suffix, e.g.
+    INCD-2015011-U. The suffix does NOT correlate with outageType (an outageId
+    ending -U was observed with outageType F).
+  fields:
+    outageType: >-
+      Observed values F (208 of 211 records, planned/future works) and U (3 records,
+      unplanned). No code list is published.
+    startTime: ISO 8601 basic, AWST offset
+    restorationTime: ISO 8601 basic, AWST offset
+    outageUpdatedTime: ISO 8601 basic, UTC
+    affectedCustomers: integer
+    areas: array of upper-case suburb / locality names
+    latitudeCentroid: WGS84 decimal degrees
+    longitudeCentroid: WGS84 decimal degrees
+    onMap: boolean
+  source: examples/western-power-all-outages-sample.json
+- name: OutageDetail
+  surface: western-power-outage-web-api
+  extends: Outage
+  detail: >-
+    Same identity, enriched with presentation content (moreInformationList,
+    calendarModal), an update historyGroup, and four hazard flags
+    (mayBeImpactedByBushfire, ByTotalFireBan, ByWeather, ByFireWeatherWarning) plus
+    bushfireCoordinates. The hazard flags are the only place Western Power joins
+    outage data to emergency-services data on a public surface.
+- name: SuburbOutageStatus
+  surface: western-power-outage-web-api
+  id_field: suburb
+  detail: >-
+    An aggregate, not a record — counts of in-flight, resolved and planned outages
+    for a suburb name. It is keyed by the same locality strings that appear in
+    Outage.areas, which is the only join key between the two.
+- name: OutageArea
+  surface: western-power-arcgis-feature-service
+  id_field: OBJECTID
+  business_key: INCIDENTREF
+  geometry: esriGeometryPolygon, spatial reference 102100 / 3857
+  fields:
+    OUTAGETYPE: string(50)
+    INCIDENTREF: string(50), indexed
+    ENARNUMBER: string(50)
+    OUTAGESTARTTIME: string(50) — a date carried as text
+    ESTIMATEDRESTORATIONTIME: string(50) — a date carried as text
+    PLANNEDOUTAGE: string(50)
+    NOCUSTOMERSIMPACTED: integer
+    TIMEADDED: esriFieldTypeDate (epoch ms, UTC)
+    AFFECTED_AREA: string(2000)
+    AFFECTED_AREA_NOCUSTOMERS: string(1200)
+    Tags: string(4000)
+  source: arcgis/wp-outage-layer0-outage-areas.json
+- name: NetworkAssetLayer
+  surface: slip-public-secure-services
+  detail: >-
+    36 catalogued datasets — distribution and transmission overhead powerlines,
+    underground cables, poles, pillars, pits, transformers, enclosures, substations,
+    streetlights, underground power project areas, and Network Capacity Mapping Tool
+    forecast remaining-capacity layers. Field-level schemas are not readable
+    anonymously (HTTP 401); only the CKAN dataset metadata is public.
+  source: catalog/datawa-western-power-datasets.json
+- name: SearchHit
+  surface: western-power-corporate-web-api
+- name: Vacancy
+  surface: western-power-corporate-web-api
+relationships:
+- from: OutageDetail
+  to: Outage
+  type: extends
+  via: outageId
+  confidence: high
+- from: Outage
+  to: SuburbOutageStatus
+  type: aggregated_into
+  via: areas -> suburb
+  confidence: high
+  note: String match on locality name; no identifier links them.
+- from: Outage
+  to: OutageArea
+  type: same_real_world_event
+  via: outageId <-> INCIDENTREF
+  confidence: medium
+  note: >-
+    UNVERIFIED JOIN. Both surfaces carry an incident reference and both back the
+    same public outage tracker, so the two are almost certainly projections of one
+    upstream incident record — but the formats differ (INCD-2015011-U vs the raw
+    INCIDENTREF values) and no published mapping exists. Do not assume the join
+    without checking a live pair.
+- from: OutageArea
+  to: NetworkAssetLayer
+  type: spatial_overlay
+  via: geometry
+  confidence: low
+  note: >-
+    Only joinable spatially, and only by a caller who has SLIP credentials for the
+    asset layers. Anonymous callers cannot correlate an outage polygon with the
+    feeder or transformer that caused it.
+gaps:
+- No customer, meter, connection, premise or account entity is exposed on any
+  anonymous surface — that data exists only behind the manual consent process.
+- No feeder, asset or work-order entity is joined to outages publicly.
+- No code lists are published for outageType, OUTAGETYPE, PLANNEDOUTAGE or Tags.
+render: null

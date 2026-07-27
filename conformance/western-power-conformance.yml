@@ -1,0 +1,105 @@
+generated: '2026-07-27'
+method: derived
+source: >-
+  openapi/ (three API Evangelist-derived descriptions), arcgis/ service metadata,
+  catalog/ DataWA CKAN records, and live probes 2026-07-27.
+summary: >-
+  The only standards genuinely in play are geospatial and vendor conventions. No
+  energy data standard, no identity standard, no API-design standard and no
+  published compliance certification was found anywhere in the estate.
+standards:
+- id: openapi-3
+  conforms: false
+  evidence: >-
+    Western Power publishes no OpenAPI. The three descriptions in openapi/ were
+    derived by API Evangelist from live probes and harvested metadata.
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: No application/problem+json anywhere; see errors/western-power-problem-types.yml.
+- id: oauth2
+  conforms: false
+  evidence: No oauth2 security scheme, no authorization server, no token endpoint.
+- id: openid-connect
+  conforms: false
+  evidence: /.well-known/openid-configuration returned 404 on every host probed.
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: /.well-known/security.txt returned 404 on every Western Power host.
+- id: rfc9727-api-catalog
+  conforms: false
+  evidence: /.well-known/api-catalog returned 404.
+- id: rfc8594-sunset-header
+  conforms: false
+  evidence: No Sunset or Deprecation header observed; no deprecation policy published.
+- id: rfc9331-ratelimit-headers
+  conforms: false
+  evidence: No RateLimit-* or X-RateLimit-* headers on any response.
+- id: hsts-rfc6797
+  conforms: true
+  evidence: >-
+    strict-transport-security max-age=31536000; includeSubDomains; preload on
+    www.westernpower.com.au and www.mywpprojects.westernpower.com.au.
+- id: esri-arcgis-rest
+  conforms: true
+  evidence: >-
+    WP_Outage_Prod FeatureServer is a standard ArcGIS REST service — ?f=json
+    self-description, Query capability, resultOffset/resultRecordCount pagination,
+    esriSpatialRel* filters, and the {"error":{code,message,details}} envelope.
+- id: geojson-rfc7946
+  conforms: true
+  evidence: >-
+    Layer 0 supportedQueryFormats is "JSON, geoJSON, PBF"; DataWA publishes GeoJSON
+    distributions for the catalogued network datasets.
+- id: ogc-wfs
+  conforms: true
+  evidence: >-
+    The DataWA/SLIP resources for Western Power datasets include OGC WFS endpoints
+    (catalog/datawa-wp-031-distribution-overhead-powerlines.json). Authentication
+    required — anonymous calls return 401.
+- id: ogc-wms
+  conforms: true
+  evidence: OGC WMS endpoints published alongside WFS on the same SLIP services.
+- id: iso8601
+  conforms: partial
+  evidence: >-
+    Outage timestamps use ISO 8601 BASIC format (20260728T190000+08:00) rather than
+    the RFC 3339 extended profile; the vacancies feed uses RFC 3339. Inconsistent
+    across endpoints.
+- id: cdr-consumer-data-standards-energy
+  conforms: false
+  evidence: >-
+    Out of scope, not merely unimplemented. CDR energy designates NEM retailers with
+    AEMO as gateway; Western Australia sits outside the National Electricity Market
+    and distributors were never designated data holders. See review.yml mandate.
+- id: green-button-espi
+  conforms: false
+  evidence: No Green Button or ESPI reference found on westernpower.com.au.
+- id: iec-cim-61968
+  conforms: false
+  evidence: No IEC Common Information Model reference in any published material.
+- id: ieee-2030.5
+  conforms: false
+  evidence: No IEEE 2030.5 / SEP2 reference found.
+- id: openadr
+  conforms: false
+  evidence: No OpenADR reference found.
+- id: ocpp-ocpi
+  conforms: false
+  evidence: No EV charging interoperability standard referenced.
+compliance_program:
+  published: false
+  certifications: []
+  detail: >-
+    No trust centre, no SOC 2 / ISO 27001 / PCI DSS claim, and no security
+    certifications page. probe-security-programs.py found no vulnerability
+    disclosure programme and no trust centre on 2026-07-27. As a WA state-owned
+    statutory corporation, Western Power's assurance obligations run to the WA
+    Government and the Economic Regulation Authority, not to a public trust page.
+    No `Compliance` pointer is emitted, because nothing is published.
+regulatory:
+  instrument: Electricity Industry (Metering) Code 2012 (Western Australia)
+  administrator: Economic Regulation Authority (ERA) of Western Australia
+  api_relevance: >-
+    A real, in-force data-provision duty that specifies no interface. Discharged
+    with a web form, a consent form and delivery by email or web portal. See
+    review.yml secondaryObligation.

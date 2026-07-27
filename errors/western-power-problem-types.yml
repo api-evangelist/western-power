@@ -1,0 +1,71 @@
+generated: '2026-07-27'
+method: derived
+source: >-
+  live probes 2026-07-27 of https://www.westernpower.com.au/api/corp/* and the
+  Esri ArcGIS feature service, plus the harvested SLIP 401 responses recorded in
+  review.yml. Western Power publishes no error reference.
+format: none
+format_detail: >-
+  Not RFC 9457. Nothing in the estate returns application/problem+json. There are
+  three different and mutually inconsistent error idioms across four surfaces, and
+  two of them return failures inside HTTP 200 or 204.
+problems:
+- status: 204
+  title: Outage not found
+  detail: >-
+    /api/corp/outage/details/{outageId} answers an unknown identifier with HTTP 204
+    No Content and a zero-length body — not 404, and not a JSON error object. A
+    client that assumes "2xx means a record" will parse an empty string.
+  observed: /api/corp/outage/details/NOPE-123 -> 204, 0 bytes (2026-07-27)
+  source_operation: openapi/western-power-outage-openapi.yml#getOutageDetails
+- status: 200
+  title: Unmatched suburb (silent)
+  detail: >-
+    /api/corp/outage/status/{suburb} returns HTTP 200 with every count zeroed and
+    the submitted string title-cased into `suburb` when the name matches nothing.
+    `errorMessage` stayed null on every probe, so there is no way to distinguish
+    "no outages here" from "that is not a suburb".
+  envelope_field: errorMessage
+  observed: /api/corp/outage/status/INCD-2015011-U -> 200, suburb "Incd-2015011-U", all counts 0
+  source_operation: openapi/western-power-outage-openapi.yml#getSuburbOutageStatus
+- status: 200
+  title: ArcGIS error envelope
+  detail: >-
+    The Esri feature service reports failures as `{"error":{"code":N,"message":"...","details":[...]}}`
+    inside an HTTP 200 response — the standard ArcGIS REST idiom. Clients must
+    inspect the body, not the status line.
+  envelope_field: error
+  source_operation: openapi/western-power-arcgis-outage-openapi.yml#queryOutageAreas
+- status: 404
+  title: Unknown route (HTML)
+  detail: >-
+    Any unmatched path under /api/ falls through to the corporate site's 105 KB
+    "Oops, something went wrong!" HTML page with content-type text/html and status
+    404. A JSON client receives an HTML document.
+  observed: /api/corp/outage/details/ (no id) and /api/corp/outage/status/ -> 404 text/html
+- status: 405
+  title: Method not allowed (HTML)
+  detail: >-
+    POST-only endpoints referenced in the client bundle answer a GET with HTTP 405
+    and the same HTML error page.
+  observed: /api/corp/automation/GetAutomationRules -> 405 text/html (2026-07-27)
+- status: 302
+  title: Redirect to login
+  detail: >-
+    Endpoints behind the customer portal answer anonymously with a 302 rather than
+    a 401 — /api/address/getlocations redirected on 2026-07-27, and the SLIP bulk
+    download host redirects to /Account/Login.
+- status: 401
+  title: Unauthorized (SLIP secure services)
+  detail: >-
+    The Landgate SLIP MapServer serving Western Power's 36 network datasets rejects
+    anonymous callers with HTTP 401. This is the one surface in the estate that uses
+    a correct status code for an authorization failure.
+  observed: >-
+    services.slip.wa.gov.au/arcgis/rest/services/WP_Public_Secure_Services/WP_Public_Secure_Services/MapServer?f=json -> 401
+guidance:
+  - Treat 204 from getOutageDetails as "not found", not as success with an empty record.
+  - Inspect the response body for an `error` object on every ArcGIS call; the status will be 200.
+  - Check content-type before parsing — an error is far more likely to be HTML than JSON.
+  - There is no error code registry, no error identifiers, and no support channel for
+    these endpoints. Failures are not reportable.

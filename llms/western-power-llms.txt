@@ -1,0 +1,58 @@
+# Western Power
+
+> Western Power is the Western Australian state-owned statutory corporation that owns and operates the electricity transmission and distribution network across the South West Interconnected System (SWIS) — 103,000+ km of powerlines, 825,788 poles and towers, 276,000 streetlights and 154 transmission substations, serving about 1.23 million customers. It is a regulated network distributor, not a retailer and not a generator.
+
+## What an agent needs to know first
+
+Western Power runs no developer program. There is no developer portal, no published API documentation, no OpenAPI, no SDK, no support channel and no terms of use for any programmatic surface. The `developer.`, `api.`, `docs.` and `data.` subdomains do not resolve. `robots.txt` carries `Disallow: /api/`, which is the only public acknowledgement that an API surface exists at all.
+
+Two surfaces nonetheless answer anonymous HTTPS GET requests, both verified 2026-07-27. They are undocumented internal endpoints of Western Power's own web applications. They may change or disappear without notice, they carry no SLA, and failures are not reportable.
+
+Australia's Consumer Data Right does not reach this organisation: CDR energy designates National Electricity Market retailers with AEMO as gateway, and Western Australia sits outside the NEM while distributors were never designated data holders. Customer energy data is obtainable only through a manual business registration plus verifiable written customer consent, delivered by email or web portal — never programmatically.
+
+## APIs
+
+- [Western Power Outage Web API](https://www.westernpower.com.au/outages/): Anonymous JSON API behind the public outage tracker. `GET /api/corp/outage/all-outages` returns every current and upcoming outage as a bare array (211 records observed); `GET /api/corp/outage/details/{outageId}` returns one outage with hazard flags and update history (204 when unknown); `GET /api/corp/outage/status/{suburb}` returns a suburb rollup.
+- [Western Power Outage Areas Feature Service](https://www.westernpower.com.au/outages/): Esri ArcGIS Online hosted feature service (`WP_Outage_Prod`, layer 0 `Outage_Areas`) serving outage polygons. Anonymous, self-describing via `?f=json`, Query capability only, 2,000-record page size.
+- [Western Power Corporate Web API](https://www.westernpower.com.au/): Anonymous site search, news article feed and careers vacancy feed under `/api/`.
+- [Western Power Public Secure Services (SLIP)](https://catalogue.data.wa.gov.au/group/about/western-power-group): 36 network asset and capacity datasets on the WA Government DataWA/SLIP platform — ArcGIS REST, OGC WFS and WMS plus file downloads. "Open data subject to registering for access": anonymous calls return HTTP 401. Esri token authentication via token.slip.wa.gov.au after registering a SLIP account and agreeing to Western Power's data licence.
+
+## Specs
+
+These OpenAPI descriptions were DERIVED BY API EVANGELIST from live probes and harvested service metadata. Western Power publishes none of them.
+
+- [Outage Web API OpenAPI](openapi/western-power-outage-openapi.yml)
+- [ArcGIS Outage Feature Service OpenAPI](openapi/western-power-arcgis-outage-openapi.yml)
+- [Corporate Web API OpenAPI](openapi/western-power-corporate-web-openapi.yml)
+
+## Artifacts
+
+- [Authentication profile](authentication/western-power-authentication.yml): no API key, no OAuth, no OIDC anywhere.
+- [API conventions](conventions/western-power-conventions.yml): pagination, date formats, caching, rate limiting, versioning.
+- [Error catalog](errors/western-power-problem-types.yml): three inconsistent error idioms; 204-as-not-found; ArcGIS errors inside HTTP 200.
+- [Lifecycle](lifecycle/western-power-lifecycle.yml): no versioning, no deprecation policy, no SLA, no API status page.
+- [Conformance](conformance/western-power-conformance.yml): geospatial standards only; no energy data standard.
+- [Data model](data-model/western-power-data-model.yml): one Outage entity projected two incompatible ways.
+- [Domain security](security/western-power-domain-security.yml): TLS 1.3, HSTS preload, SPF and DMARC p=reject, no DNSSEC, no CAA.
+- [Well-known discovery](well-known/western-power-well-known.yml): every /.well-known/ probe returned 404.
+- [Agentic access](agentic-access/western-power-agentic-access.yml): all 9 described operations are reads.
+- [Agent skills](skills/_index.yml)
+- [Sample responses](examples/): live captures from 2026-07-27.
+
+## Docs
+
+- [Western Power](https://www.westernpower.com.au/)
+- [Outage tracker](https://www.westernpower.com.au/outages/)
+- [DataWA catalogue — Western Power group](https://catalogue.data.wa.gov.au/group/about/western-power-group)
+- [Western Power data licence terms and conditions](https://catalogue.data.wa.gov.au/dataset/wp-licence-terms-and-conditions)
+- [Registration for access to energy data](https://www.westernpower.com.au/issues-enquiries/requests-preferences/registration-for-access-to-energy-data/)
+- [Verifiable consent for access to energy data](https://www.westernpower.com.au/issues-enquiries/requests-preferences/verifiable-consent-for-access-to-energy-data/)
+- [Retailers and generators](https://www.westernpower.com.au/resources-education/industry-resources/retailers-and-generators/)
+- [Network Capacity Mapping Tool](https://www.westernpower.com.au/resources-education/calculators-tools/network-capacity-mapping-tool/)
+- [Contact us](https://www.westernpower.com.au/about/contact-us/)
+
+## Optional
+
+- [Terms and conditions](https://www.westernpower.com.au/terms--conditions/)
+- [Privacy policy](https://www.westernpower.com.au/privacy-policy/)
+- [News](https://www.westernpower.com.au/news/)

@@ -9,9 +9,16 @@ review:
   homeMarket: Australia (Western Australia — South West Interconnected System)
   tier: network-distributor
   summary: >-
-    Western Power has no developer program, no developer portal and no OpenAPI. It
-    has exactly one anonymous machine-readable surface — an undocumented Esri ArcGIS
-    Online feature service that backs its public outage tracker. Its 36 network asset
+    Western Power has no developer program, no developer portal and publishes no
+    OpenAPI. A second enrichment round on 2026-07-27 found it is not, however,
+    API-less. Reading the outage page markup and the site's own JavaScript bundle
+    exposed an undocumented first-party JSON API at
+    westernpower.com.au/api/corp/outage/* — all-outages, details/{outageId} and
+    status/{suburb} — that answers anonymous HTTPS GET with application/json, plus
+    anonymous search, news and vacancy endpoints under /api/. Alongside them sits the
+    undocumented Esri ArcGIS Online feature service that draws the outage map. None
+    of these is documented, versioned, supported or covered by terms of use, and
+    robots.txt disallows /api/ to crawlers. Its 36 network asset
     and capacity datasets are published through WA Government portals as "open data
     subject to registering for access" and return HTTP 401 to anonymous callers.
     Customer energy data is available to third parties only through a business
@@ -106,7 +113,20 @@ consumerVsMarketData:
   marketDataOpen: true
   marketDataDetail: >-
     Two very different surfaces, and the distinction is the finding. (1) TRULY
-    ANONYMOUS but undocumented — the live outage feature service at
+    ANONYMOUS but undocumented — (a) the first-party JSON API behind the outage
+    tracker, discovered on 2026-07-27 in the outage page's own markup
+    (all-outages-endpoint="/api/corp/outage/all-outages",
+    single-outage-endpoint="/api/corp/outage/details/"). GET /all-outages returned
+    HTTP 200 and 211 outage records in a 61 KB bare array;
+    GET /details/{outageId} returned the outage with an update history and bushfire,
+    total-fire-ban, weather and fire-weather-warning hazard flags, answering an
+    unknown id with HTTP 204 rather than 404; GET /status/{suburb} returned a suburb
+    rollup and never signals an error. The site's client bundle
+    (/static/assets/app.18c3b7f4.js) references 74 /api/ paths in total; the rest are
+    authenticated portal endpoints for customers, enquiries, organisations and
+    projects and were deliberately not exercised. /api/search, /api/corp/vacancies
+    and /api/corp/newsarticles also answered anonymously with 200. And (b) the live
+    outage feature service at
     services2.arcgis.com/tBLxde4cxSlNUxsM/ArcGIS/rest/services/WP_Outage_Prod/FeatureServer
     answered unauthenticated requests with HTTP 200 for service metadata, layer
     metadata and a /query call returning live outage records (incident reference,
@@ -257,7 +277,20 @@ artifacts:
   openapi:
     harvested: false
     count: 0
-    note: No OpenAPI, Swagger, RAML, or Postman collection exists for any Western Power surface.
+    note: >-
+      Western Power publishes no OpenAPI, Swagger, RAML or Postman collection for any
+      surface, and none was found in round 2 either.
+    derived: 3
+    derivedNote: >-
+      Three OpenAPI 3.1 descriptions were DERIVED BY API EVANGELIST on 2026-07-27 and
+      are labelled as such in their info blocks
+      (x-apievangelist-provenance.provider_published false) —
+      openapi/western-power-outage-openapi.yml and
+      openapi/western-power-corporate-web-openapi.yml from live probes of the
+      anonymous /api/ endpoints, and openapi/western-power-arcgis-outage-openapi.yml
+      from the harvested Esri service and layer metadata. Every path, parameter,
+      status code and response field in them was observed on the wire. They are not
+      provider claims.
   harvested:
     - path: arcgis/wp-outage-featureserver.json
       source: https://services2.arcgis.com/tBLxde4cxSlNUxsM/ArcGIS/rest/services/WP_Outage_Prod/FeatureServer?f=pjson
@@ -285,10 +318,70 @@ artifacts:
       httpStatus: 200
       type: CKAN package_show, one dataset with WFS/WMS/ArcGIS/GeoJSON resource endpoints (verbatim)
 
+round2:
+  date: '2026-07-27'
+  scope: enrichment pipeline, second pass
+  newProbes:
+    - url: https://www.westernpower.com.au/robots.txt
+      status: 200
+      note: >-
+        Carries "Disallow: /api/" — the only public acknowledgement anywhere that an
+        API surface exists. This is what prompted re-probing beyond bare /api.
+    - url: https://www.westernpower.com.au/api/corp/outage/all-outages
+      status: 200
+      note: 211 outage records, 61 KB, application/json, anonymous
+    - url: https://www.westernpower.com.au/api/corp/outage/details/INCD-2015011-U
+      status: 200
+      note: full outage detail with hazard flags and update history
+    - url: https://www.westernpower.com.au/api/corp/outage/details/NOPE-123
+      status: 204
+      note: unknown identifier returns 204 with an empty body, not 404
+    - url: https://www.westernpower.com.au/api/corp/outage/status/BOORAGOON
+      status: 200
+      note: suburb rollup; unmatched names also return 200 with zeroed counts
+    - url: https://www.westernpower.com.au/api/search?query=outage
+      status: 200
+      note: Optimizely Find-backed site search with an embedded suburb outage rollup
+    - url: https://www.westernpower.com.au/api/corp/vacancies
+      status: 200
+    - url: https://www.westernpower.com.au/api/corp/newsarticles
+      status: 200
+    - url: https://www.westernpower.com.au/api/corp/automation/GetAutomationRules
+      status: 405
+    - url: https://www.westernpower.com.au/api/address/getlocations
+      status: 302
+      note: redirects rather than returning 401
+    - url: https://www.westernpower.com.au/llms.txt
+      status: 404
+    - url: https://www.westernpower.com.au/.well-known/security.txt
+      status: 404
+    - url: https://www.westernpower.com.au/.well-known/api-catalog
+      status: 404
+    - url: https://www.westernpower.com.au/.well-known/oauth-authorization-server
+      status: 404
+    - url: https://my.westernpower.com.au/.well-known/security.txt
+      status: 404
+    - url: https://services.slip.wa.gov.au/.well-known/security.txt
+      status: 404
+    - url: https://api.github.com/users/western-power
+      status: 200
+      note: >-
+        github.com/Western-Power is a verified Western Power organisation (blog field
+        points at westernpower.com.au, created 2021-07-12) with 0 public repositories.
+    - url: https://pypi.org/pypi/westernpower/json
+      status: 404
+      note: no client library on PyPI, npm or GitHub
+  pii:
+    note: >-
+      The client bundle exposes 74 /api/ paths. The customer, enquiry,
+      organisation-details, project-details and case-management endpoints handle
+      personal information and were NOT exercised, catalogued or tooled. Only
+      read-only, non-personal, publicly-rendered endpoints were probed and described.
+
 findings:
   developerPortal: none
   developerPortalConfirmed: false
-  apisListed: 2
+  apisListed: 4
   gated: true
   notes: >-
     Western Power is the control case's control case. Australia proved a statutory

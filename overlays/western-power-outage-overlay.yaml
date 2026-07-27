@@ -1,0 +1,38 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the Western Power Outage Web API
+  version: 1.0.0
+extends: openapi/western-power-outage-openapi.yml
+x-apievangelist:
+  generated: '2026-07-27'
+  method: generated
+  note: >-
+    Records the provenance and operational caveats API Evangelist attaches to this
+    surface. The description it extends is itself derived; nothing here is a
+    Western Power claim.
+actions:
+- target: $.info
+  update:
+    x-apievangelist-provider: western-power
+    x-apievangelist-surface: undocumented-first-party
+    x-apievangelist-verified: '2026-07-27'
+    x-apievangelist-support: none
+    x-apievangelist-terms: none published for this surface
+- target: $.paths['/all-outages'].get
+  update:
+    x-apievangelist-note: >-
+      Unpaginated bare array. Fetch whole and filter client-side. 211 records / 61 KB
+      observed 2026-07-27.
+    x-agentic-access:
+      action-class: connected
+      consequence: read
+- target: $.paths['/details/{outageId}'].get
+  update:
+    x-apievangelist-note: >-
+      Unknown identifiers return 204 with an empty body, not 404. Check status before
+      parsing.
+- target: $.paths['/status/{suburb}'].get
+  update:
+    x-apievangelist-note: >-
+      Never returns an error status. An unmatched suburb is indistinguishable from a
+      suburb with no outages.

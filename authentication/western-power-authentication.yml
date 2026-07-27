@@ -1,0 +1,72 @@
+generated: '2026-07-27'
+method: searched
+source: >-
+  live probes 2026-07-27 plus the Western Power and DataWA/SLIP access pages; the
+  derive-authentication.py pass found zero securitySchemes because none of the three
+  captured OpenAPI descriptions declares one — every reachable surface is either
+  fully anonymous or gated outside the API layer.
+docs: https://www.westernpower.com.au/issues-enquiries/requests-preferences/registration-for-access-to-energy-data/
+summary:
+  types: [none, esri-token, session-cookie]
+  api_key_in: []
+  oauth2_flows: []
+  openid_connect: false
+  note: >-
+    There is no API key, no bearer token, no OAuth 2.0 and no OpenID Connect
+    anywhere in the Western Power estate. The two machine-readable surfaces that
+    answer at all answer anonymously; everything richer is gated by a human
+    registration or a licence agreement, not by a credential an API client can
+    obtain programmatically.
+schemes:
+- name: none
+  type: none
+  applies_to:
+  - openapi/western-power-outage-openapi.yml
+  - openapi/western-power-corporate-web-openapi.yml
+  - openapi/western-power-arcgis-outage-openapi.yml
+  description: >-
+    Anonymous, unauthenticated HTTPS GET. Verified 200 on 2026-07-27 against
+    /api/corp/outage/all-outages, /api/corp/outage/details/{outageId},
+    /api/corp/outage/status/{suburb}, /api/search, /api/corp/newsarticles,
+    /api/corp/vacancies and the ArcGIS FeatureServer metadata and query endpoints.
+    No key, token, referer check or origin restriction was required.
+  evidence: examples/western-power-all-outages-sample.json
+- name: esri-token
+  type: token
+  applies_to: Western Power Public Secure Services (SLIP)
+  token_endpoint: https://token.slip.wa.gov.au
+  description: >-
+    Esri token authentication after registering a SLIP account on the WA Government
+    platform and agreeing to Western Power's Data Licence Terms and Conditions.
+    Anonymous calls to the MapServer root and to layer 10 both returned HTTP 401 on
+    2026-07-27.
+  registration: https://catalogue.data.wa.gov.au/dataset/wp-licence-terms-and-conditions
+- name: slip-download-session
+  type: session-cookie
+  applies_to: data-downloads.slip.wa.gov.au bulk downloads
+  description: >-
+    Form login; an anonymous request for a dataset download returned HTTP 302 to
+    /Account/Login.
+- name: retailer-generator-portal
+  type: session-cookie
+  applies_to: https://services.westernpower.com.au/online/nbu/do/restricted/Home
+  description: >-
+    Username/password login to the restricted Retailer and Generator portal. A
+    commercial and regulatory relationship is a precondition. No API, no interface
+    control document and no machine credential is published for it.
+- name: consumer-energy-data
+  type: out-of-band
+  applies_to: customer interval and accumulated metering data
+  description: >-
+    Not an authentication scheme at all — a manual gate. A third party registers a
+    business with Western Power (name, ABN, business type, invoicing), then obtains
+    verifiable written customer consent per meter. Data is delivered by email or a
+    web portal. There is no OAuth consent flow, no scopes, no accreditation register
+    and no machine interface at the end of it.
+  docs:
+  - https://www.westernpower.com.au/issues-enquiries/requests-preferences/registration-for-access-to-energy-data/
+  - https://www.westernpower.com.au/issues-enquiries/requests-preferences/verifiable-consent-for-access-to-energy-data/
+discovery:
+  openid_configuration: 404 on www.westernpower.com.au and my.westernpower.com.au (2026-07-27)
+  oauth_authorization_server: 404 on www.westernpower.com.au (2026-07-27)
+  oauth_protected_resource: 404 on www.westernpower.com.au (2026-07-27)

@@ -1,0 +1,23 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the Western Power Outage Areas Feature Service
+  version: 1.0.0
+extends: openapi/western-power-arcgis-outage-openapi.yml
+x-apievangelist:
+  generated: '2026-07-27'
+  method: generated
+actions:
+- target: $.info
+  update:
+    x-apievangelist-provider: western-power
+    x-apievangelist-surface: undocumented-esri-hosted
+    x-apievangelist-verified: '2026-07-27'
+    x-apievangelist-stability-risk: >-
+      Hosted ArcGIS Online item 34231924fe1d43f2a8792da7abe597b7. Republishing the
+      item would change the service URL and break every caller.
+- target: $.paths['/0/query'].get
+  update:
+    x-apievangelist-note: >-
+      Errors are returned inside HTTP 200 as {"error":{code,message,details}}. Check
+      the body, not the status line.
+    x-apievangelist-cache: 120 seconds (layer cacheMaxAge)

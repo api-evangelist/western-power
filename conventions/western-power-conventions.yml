@@ -1,0 +1,125 @@
+generated: '2026-07-27'
+method: derived
+source: >-
+  live probes of https://www.westernpower.com.au/api/corp/* and the ArcGIS feature
+  service on 2026-07-27, plus the harvested layer metadata in arcgis/. Western Power
+  publishes no developer documentation, so every convention below was observed on
+  the wire rather than read from a reference.
+scope: >-
+  Cross-cutting request/response semantics for the two anonymous machine-readable
+  surfaces. These are conventions in the descriptive sense — what the endpoints
+  actually do — not a contract Western Power has committed to.
+authentication:
+  style: none
+  detail: Anonymous HTTPS GET. See authentication/western-power-authentication.yml.
+transport:
+  protocol: HTTP/2 over TLS 1.3
+  edge: Cloudflare — server header "cloudflare", cf-ray and cf-cache-status observed
+  media_type: application/json; charset=utf-8
+idempotency:
+  supported: false
+  detail: >-
+    No idempotency contract exists and none is needed on the public surface — every
+    reachable operation is a read (GET). The ArcGIS layer advertises capabilities
+    "Query" only. No Idempotency-Key header, no request-deduplication semantics, and
+    no write operation is exposed anonymously.
+pagination:
+  western_power_web_api:
+    style: none
+    detail: >-
+      /api/corp/outage/all-outages returns the entire result set as a bare JSON
+      array with no envelope, no cursor and no page parameters. 211 records / 61 KB
+      observed on 2026-07-27.
+  site_content_api:
+    style: page-number
+    params: [page, pagenumber, pageSize]
+    response_fields: [currentPage, pageSize, totalMatching]
+    detail: >-
+      /api/search, /api/corp/newsarticles and /api/corp/vacancies use 1-based page
+      numbers and return totalMatching + pageSize in the envelope. Parameter naming
+      is inconsistent between endpoints (`page` vs `pagenumber`).
+  arcgis:
+    style: offset-limit
+    params: [resultOffset, resultRecordCount]
+    detail: >-
+      Standard Esri pagination; advancedQueryCapabilities.supportsPagination is true.
+      maxRecordCount 2000, standardMaxRecordCountNoGeometry 32000. The response sets
+      exceededTransferLimit when a page is truncated.
+filtering_and_selection:
+  arcgis:
+    where: SQL-92 where clause (useStandardizedQueries true)
+    field_selection: outFields
+    spatial: geometry + geometryType + spatialRel (10 relationships advertised)
+    ordering: orderByFields
+    statistics: supported (COUNT/SUM/AVG/VAR/STDDEV/MIN/MAX/percentiles)
+  western_power_web_api:
+    detail: No filtering. Clients fetch all outages and filter client-side.
+content_negotiation:
+  arcgis:
+    param: f
+    values: [json, pjson, geojson, pbf, html]
+    detail: >-
+      Format is a query parameter, not an Accept header. supportedQueryFormats is
+      "JSON, geoJSON, PBF"; the default for metadata endpoints is HTML.
+  western_power_web_api:
+    detail: JSON only; the Accept header is ignored.
+date_time:
+  outage_web_api: >-
+    ISO 8601 BASIC format with an offset — `20260728T190000+08:00` for outage start
+    and restoration (AWST), `20260718T160020+00:00` for outageUpdatedTime (UTC).
+    Not the extended format most clients expect; parsers must be told.
+  arcgis: >-
+    esriFieldTypeDate fields (TIMEADDED) are epoch milliseconds; the layer's
+    dateFieldsTimeReference is UTC with respectsDaylightSaving false.
+  site_content_api: RFC 3339 extended format, e.g. `2026-07-26T20:19:51+00:00`.
+error_envelope:
+  detail: See errors/western-power-problem-types.yml. There is no RFC 9457 problem+json
+    anywhere; the outage API signals "not found" as HTTP 204 with an empty body, the
+    suburb status endpoint carries a nullable `errorMessage` string inside a 200, and
+    ArcGIS returns its own `{error:{code,message,details}}` envelope with HTTP 200.
+rate_limiting:
+  documented: false
+  headers: none observed
+  detail: >-
+    No X-RateLimit-*, no RateLimit-* (RFC 9331 style), no Retry-After on any 200
+    response. Cloudflare sits in front and may throttle at the edge without a
+    documented contract. Callers should self-limit; the outage tracker itself polls
+    infrequently.
+caching:
+  arcgis: cacheMaxAge 120 seconds declared on layer 0.
+  western_power_web_api: >-
+    last-modified is set to the response time and cf-cache-status was EXPIRED on
+    probe; no ETag, no Cache-Control max-age observed.
+versioning:
+  scheme: none
+  detail: >-
+    No version segment, no version header, no version query parameter on the
+    /api/corp/* surface. The site emits an AssemblyFileVersion build number
+    (2026.7.7.1) in HTML comments only. The client bundle references /api/corp/v2/
+    and /api/corp/v3/ prefixes for other (authenticated) endpoints, so a version
+    convention exists internally but is not applied to the public outage surface.
+    ArcGIS reports currentVersion 12 for the Esri platform, not for Western Power's
+    data contract.
+request_tracing:
+  headers: [cf-ray, request-context]
+  detail: >-
+    No X-Request-Id or correlation header of Western Power's own. cf-ray is a
+    Cloudflare edge trace, and request-context carries an Azure Application Insights
+    appId. Neither is a supported client-facing trace id.
+security_headers:
+  observed:
+  - strict-transport-security max-age=31536000; includeSubDomains; preload
+  - x-content-type-options nosniff
+  - x-frame-options sameorigin
+  - referrer-policy same-origin
+  - cross-origin-opener-policy same-origin
+  - cross-origin-resource-policy same-origin
+  - x-permitted-cross-domain-policies none
+  note: >-
+    cross-origin-resource-policy same-origin means a browser on a third-party origin
+    cannot read these responses; server-side and non-browser clients are unaffected.
+cross_links:
+  errors: errors/western-power-problem-types.yml
+  lifecycle: lifecycle/western-power-lifecycle.yml
+  authentication: authentication/western-power-authentication.yml
+  conformance: conformance/western-power-conformance.yml

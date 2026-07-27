@@ -1,0 +1,259 @@
+openapi: 3.1.0
+info:
+  title: Western Power Outage Areas Feature Service (ArcGIS REST)
+  version: '12'
+  description: >-
+    Esri ArcGIS Online hosted feature service (`WP_Outage_Prod`, layer 0
+    `Outage_Areas`) that serves the outage polygons behind the public Western
+    Power outage tracker. The service answers anonymous requests, is
+    self-describing through the standard ArcGIS REST `?f=json` metadata
+    convention, and advertises only the `Query` capability. This description was
+    DERIVED BY API EVANGELIST from the service metadata harvested verbatim to
+    `arcgis/wp-outage-featureserver.json` and `arcgis/wp-outage-layer0-outage-areas.json`
+    on 2026-07-27; the parameter set is the Esri ArcGIS REST Query interface, and
+    the response fields are the layer's own declared field list. Western Power
+    publishes no documentation, terms of use, SLA or deprecation policy for it.
+  x-apievangelist-provenance:
+    method: derived
+    derived_by: API Evangelist
+    derived_from:
+      - arcgis/wp-outage-featureserver.json
+      - arcgis/wp-outage-layer0-outage-areas.json
+      - arcgis/wp-outage-sample-query-response.json
+    probe_date: '2026-07-27'
+    provider_published: false
+  x-service-capabilities: Query
+  x-max-record-count: 2000
+servers:
+  - url: https://services2.arcgis.com/tBLxde4cxSlNUxsM/ArcGIS/rest/services/WP_Outage_Prod/FeatureServer
+    description: ArcGIS Online hosted feature service (anonymous)
+tags:
+  - name: Metadata
+  - name: Query
+paths:
+  /:
+    get:
+      tags: [Metadata]
+      operationId: getFeatureServerMetadata
+      summary: Get feature service metadata
+      description: Self-describing service document listing layers, extents, capabilities and formats.
+      parameters:
+        - $ref: '#/components/parameters/Format'
+      responses:
+        '200':
+          description: Service metadata.
+          content:
+            application/json:
+              schema:
+                type: object
+  /0:
+    get:
+      tags: [Metadata]
+      operationId: getOutageAreasLayerMetadata
+      summary: Get layer 0 (Outage_Areas) metadata
+      description: >-
+        Layer document with the full field list, indexes, query capabilities,
+        `maxRecordCount` (2000) and the 120-second `cacheMaxAge`.
+      parameters:
+        - $ref: '#/components/parameters/Format'
+      responses:
+        '200':
+          description: Layer metadata.
+          content:
+            application/json:
+              schema:
+                type: object
+  /0/query:
+    get:
+      tags: [Query]
+      operationId: queryOutageAreas
+      summary: Query outage area polygons
+      description: >-
+        Standard ArcGIS REST query against layer 0. Supports SQL `where` clauses,
+        attribute selection, spatial filters, ordering, statistics and pagination
+        (`resultOffset` + `resultRecordCount`, `advancedQueryCapabilities.supportsPagination`
+        is true). Page size is capped at 2000 features (32000 with
+        `returnGeometry=false`). Output formats are JSON, geoJSON and PBF.
+      parameters:
+        - name: where
+          in: query
+          description: SQL-92 where clause. Use `1=1` to select all.
+          schema:
+            type: string
+            default: '1=1'
+        - name: outFields
+          in: query
+          description: Comma-separated field list, or `*`.
+          schema:
+            type: string
+            default: '*'
+        - name: returnGeometry
+          in: query
+          schema:
+            type: boolean
+            default: true
+        - name: geometry
+          in: query
+          description: Spatial filter geometry (Esri JSON or comma-separated envelope).
+          schema:
+            type: string
+        - name: geometryType
+          in: query
+          schema:
+            type: string
+            enum:
+              - esriGeometryPoint
+              - esriGeometryPolyline
+              - esriGeometryPolygon
+              - esriGeometryEnvelope
+        - name: spatialRel
+          in: query
+          description: >-
+            Spatial relationship. The layer advertises esriSpatialRelIntersects,
+            Contains, Crosses, EnvelopeIntersects, IndexIntersects, Overlaps,
+            Touches, Within, Disjoint and Relation.
+          schema:
+            type: string
+            default: esriSpatialRelIntersects
+        - name: inSR
+          in: query
+          schema:
+            type: string
+        - name: outSR
+          in: query
+          description: Output spatial reference. The layer's native SR is 102100/3857.
+          schema:
+            type: string
+        - name: orderByFields
+          in: query
+          schema:
+            type: string
+        - name: returnCountOnly
+          in: query
+          schema:
+            type: boolean
+            default: false
+        - name: resultOffset
+          in: query
+          description: Pagination offset.
+          schema:
+            type: integer
+        - name: resultRecordCount
+          in: query
+          description: Page size, capped at 2000 (32000 when returnGeometry=false).
+          schema:
+            type: integer
+            maximum: 2000
+        - name: f
+          in: query
+          description: Response format. `supportedQueryFormats` is "JSON, geoJSON, PBF".
+          schema:
+            type: string
+            enum: [json, pjson, geojson, pbf]
+            default: json
+      responses:
+        '200':
+          description: >-
+            Query result. ArcGIS returns HTTP 200 for errors too — check for an
+            `error` object in the body.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/FeatureSet'
+                  - $ref: '#/components/schemas/ArcGISError'
+components:
+  parameters:
+    Format:
+      name: f
+      in: query
+      description: Response format.
+      schema:
+        type: string
+        enum: [json, pjson, html]
+        default: html
+  schemas:
+    FeatureSet:
+      type: object
+      properties:
+        objectIdFieldName:
+          type: string
+        globalIdFieldName:
+          type: string
+        geometryType:
+          type: string
+        spatialReference:
+          type: object
+        fields:
+          type: array
+          items:
+            type: object
+        exceededTransferLimit:
+          type: boolean
+        features:
+          type: array
+          items:
+            type: object
+            properties:
+              attributes:
+                $ref: '#/components/schemas/OutageAreaAttributes'
+              geometry:
+                type: object
+    OutageAreaAttributes:
+      type: object
+      description: Field list declared verbatim by layer 0 (Outage_Areas).
+      properties:
+        OBJECTID:
+          type: integer
+          description: esriFieldTypeOID, system maintained primary key.
+        OUTAGETYPE:
+          type: [string, 'null']
+          maxLength: 50
+        INCIDENTREF:
+          type: [string, 'null']
+          maxLength: 50
+        ENARNUMBER:
+          type: [string, 'null']
+          maxLength: 50
+        OUTAGESTARTTIME:
+          type: [string, 'null']
+          maxLength: 50
+        ESTIMATEDRESTORATIONTIME:
+          type: [string, 'null']
+          maxLength: 50
+        PLANNEDOUTAGE:
+          type: [string, 'null']
+          maxLength: 50
+        NOCUSTOMERSIMPACTED:
+          type: [integer, 'null']
+        TIMEADDED:
+          type: [integer, 'null']
+          description: esriFieldTypeDate, epoch milliseconds, UTC time reference.
+        AFFECTED_AREA:
+          type: [string, 'null']
+          maxLength: 2000
+        AFFECTED_AREA_NOCUSTOMERS:
+          type: [string, 'null']
+          maxLength: 1200
+        Tags:
+          type: [string, 'null']
+          maxLength: 4000
+        SHAPE__Area:
+          type: [number, 'null']
+        SHAPE__Length:
+          type: [number, 'null']
+    ArcGISError:
+      type: object
+      description: Esri error envelope, returned with HTTP 200.
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: integer
+            message:
+              type: string
+            details:
+              type: array
+              items:
+                type: string

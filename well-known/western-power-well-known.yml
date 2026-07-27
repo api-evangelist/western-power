@@ -1,0 +1,70 @@
+generated: '2026-07-27'
+method: searched
+source: live HTTP probes of every apis.yml and OpenAPI servers[] host
+summary: >-
+  No host in the Western Power estate serves any /.well-known/ discovery document.
+  Every probe returned 404 (or 403 at the Esri edge, and a CKAN soft-404 HTML page
+  at the WA Government catalogue). There is no security.txt, no OpenID Connect
+  discovery, no OAuth authorization-server or protected-resource metadata, no
+  RFC 9727 api-catalog and no ai-plugin.json. Absence is the finding: Western Power
+  runs no machine-discoverable identity or security surface.
+hosts:
+- host: https://www.westernpower.com.au
+  role: corporate site + the anonymous /api/corp/* endpoints
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/change-password
+    status: 404
+  - path: /.well-known/dnt-policy.txt
+    status: 404
+  - path: /llms.txt
+    status: 404
+  - path: /robots.txt
+    status: 200
+    note: >-
+      Present and relevant — it carries "Disallow: /api/", which is the only public
+      acknowledgement anywhere that westernpower.com.au has an /api/ surface at all.
+- host: https://my.westernpower.com.au
+  role: customer / energy-data portal
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /robots.txt
+    status: 200
+- host: https://services2.arcgis.com
+  role: Esri ArcGIS Online tenant hosting the outage feature service
+  documents:
+  - path: /.well-known/security.txt
+    status: 403
+    note: Esri edge rejects the path; the tenant is not Western Power's to configure.
+- host: https://services.slip.wa.gov.au
+  role: Landgate SLIP platform serving the 36 catalogued network datasets
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+- host: https://catalogue.data.wa.gov.au
+  role: WA Government CKAN catalogue (third-party publisher of Western Power data)
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    note: >-
+      Soft 404 — CKAN 2.11.5 returns its themed "404 Not Found" HTML page with a
+      200-family shell. Not a real security.txt.
+  - path: /.well-known/api-catalog
+    status: 200
+    note: Same CKAN soft-404 HTML page; not an RFC 9727 catalogue.

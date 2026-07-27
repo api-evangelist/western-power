@@ -1,0 +1,47 @@
+generated: '2026-07-27'
+method: derived
+status: candidate
+source: openapi/western-power-outage-openapi.yml, openapi/western-power-arcgis-outage-openapi.yml
+published: false
+search:
+  performed: '2026-07-27'
+  checked:
+  - westernpower.com.au (868-URL sitemap; no MCP, agent or AI page)
+  - /.well-known/ on every Western Power host (all 404)
+  - npm registry and GitHub organisation github.com/Western-Power (0 public repositories)
+  result: >-
+    Western Power operates no MCP server, hosted or otherwise, and has published no
+    agent-facing surface. No MCPServer pointer is wired into apis.yml — the tool list
+    below is a CANDIDATE design derived from the API Evangelist OpenAPI descriptions,
+    not something that exists.
+server:
+  name: western-power
+  transport: http
+  url: null
+tools:
+- name: list_all_outages
+  description: List every current and upcoming Western Power outage on the SWIS network.
+  source_operation: openapi/western-power-outage-openapi.yml#listAllOutages
+  read_only: true
+- name: get_outage_details
+  description: Get one outage with update history and bushfire / fire-ban / weather hazard flags.
+  source_operation: openapi/western-power-outage-openapi.yml#getOutageDetails
+  read_only: true
+- name: get_suburb_outage_status
+  description: Get the outage rollup for a named suburb — in-flight, planned and resolved counts.
+  source_operation: openapi/western-power-outage-openapi.yml#getSuburbOutageStatus
+  read_only: true
+- name: query_outage_areas
+  description: Query outage area polygons with SQL, spatial filters and server-side statistics.
+  source_operation: openapi/western-power-arcgis-outage-openapi.yml#queryOutageAreas
+  read_only: true
+- name: describe_outage_layer
+  description: Read the ArcGIS layer schema, limits and query capabilities.
+  source_operation: openapi/western-power-arcgis-outage-openapi.yml#getOutageAreasLayerMetadata
+  read_only: true
+notes:
+  - Every candidate tool is a read. There is no write operation on any anonymous
+    Western Power surface, so no tool would need human-in-the-loop escalation.
+  - No tool should be built over the customer, enquiry, organisation or project
+    endpoints referenced in the site's client bundle — those are portal endpoints
+    handling personal information and are out of scope for public tooling.

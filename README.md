@@ -1,6 +1,6 @@
 # Western Power (western-power)
 
-Western Power is the Western Australian state-owned statutory corporation that owns and operates the electricity transmission and distribution network — the poles, wires, substations and streetlights — across the South West Interconnected System (SWIS), from Kalbarri in the north to Albany in the south and east to Kalgoorlie, across more than 103,000 km of powerlines, 825,788 poles and towers, 276,000 streetlights and 154 transmission substations. It is a regulated network distributor (DNO/DSO), not a retailer and not a generator; Synergy is the SWIS retailer for residential and small-business customers and AEMO operates the WA Wholesale Electricity Market. Its API posture is honestly minimal — there is no developer portal, no published API program and no OpenAPI anywhere on westernpower.com.au. Consumer energy data is real but not programmatic. Australia's Consumer Data Right, the mandate that forced identical banking APIs and was then transplanted into energy, does not reach this organisation: CDR energy covers National Electricity Market retailers, and Western Australia sits outside the NEM while distributors were never designated data holders in any state.
+Western Power is the Western Australian state-owned statutory corporation that owns and operates the electricity transmission and distribution network — the poles, wires, substations and streetlights — across the South West Interconnected System (SWIS), from Kalbarri in the north to Albany in the south and east to Kalgoorlie, across more than 103,000 km of powerlines, 825,788 poles and towers, 276,000 streetlights and 154 transmission substations. It is a regulated network distributor (DNO/DSO), not a retailer and not a generator; Synergy is the SWIS retailer for residential and small-business customers and AEMO operates the WA Wholesale Electricity Market. Its API posture is honestly minimal — there is no developer portal, no published API program and no published OpenAPI anywhere on westernpower.com.au. It is not, however, API-less: a second enrichment pass on 2026-07-27 found an undocumented first-party JSON API at `westernpower.com.au/api/corp/outage/*` behind the public outage tracker, alongside anonymous search, news and vacancy endpoints and the Esri ArcGIS feature service that draws the outage map. All are internal endpoints of Western Power's web applications — `robots.txt` disallows `/api/` — with no reference, no terms of use, no versioning, no SLA and no support channel. Consumer energy data is real but not programmatic. Australia's Consumer Data Right, the mandate that forced identical banking APIs and was then transplanted into energy, does not reach this organisation: CDR energy covers National Electricity Market retailers, and Western Australia sits outside the NEM while distributors were never designated data holders in any state.
 
 **APIs.json:** [https://raw.githubusercontent.com/api-evangelist/western-power/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/western-power/refs/heads/main/apis.yml)
 
@@ -96,3 +96,26 @@ Western Power's network asset and capacity spatial data — distribution and tra
 ## Maintainers
 
 - Kin Lane — kin@apievangelist.com
+
+## Enrichment round — 2026-07-27
+
+Artifacts added in the second pipeline pass. Every OpenAPI here was **derived by API Evangelist** from live probes or harvested service metadata and is labelled as such in its `info` block; Western Power publishes none of them.
+
+- `openapi/` — three OpenAPI 3.1 descriptions (outage web API, corporate web API, ArcGIS feature service)
+- `overlays/` — one Overlay 1.0.0 per description, carrying provenance and operational caveats
+- `examples/` — live sample responses captured 2026-07-27
+- `authentication/` — anonymous, Esri token, session login; no API key, OAuth or OIDC anywhere
+- `conventions/` — pagination, ISO 8601 basic timestamps, caching, rate limiting, versioning
+- `errors/` — three inconsistent error idioms; 204-as-not-found; ArcGIS errors inside HTTP 200
+- `lifecycle/` — no versioning, no deprecation policy, no SLA, no API status page
+- `conformance/` — geospatial and vendor standards only; no energy data standard; no published certifications
+- `data-model/` — one Outage entity projected two incompatible ways
+- `security/` — TLS/HSTS/DNS probe; no vulnerability disclosure programme, no trust centre
+- `well-known/` — every `/.well-known/` path probed; all 404
+- `packages/` — probed negative; no client library in any registry
+- `skills/` — two generated agent skills grounded in verified operationIds
+- `mcp/` — candidate tool list only; Western Power operates no MCP server
+- `agentic-access/` — recommended `x-agentic-access` contracts; all nine described operations are reads
+- `llms/` — generated llms.txt
+
+The site's client bundle references 74 `/api/` paths. The customer, enquiry, organisation and project endpoints handle personal information and were deliberately **not** probed, catalogued or tooled.

@@ -1,0 +1,72 @@
+[
+  {
+    "outageId": "INCD-2015011-U",
+    "outageType": "F",
+    "startTime": "20260728T190000+08:00",
+    "restorationTime": "20260729T050000+08:00",
+    "onMap": true,
+    "outageUpdatedTime": "20260718T160020+00:00",
+    "affectedCustomers": 126,
+    "areas": [
+      "BOORAGOON"
+    ],
+    "latitudeCentroid": -32.03583,
+    "longitudeCentroid": 115.83067
+  },
+  {
+    "outageId": "INCD-202344-X",
+    "outageType": "F",
+    "startTime": "20260731T073000+08:00",
+    "restorationTime": "20260731T150000+08:00",
+    "onMap": true,
+    "outageUpdatedTime": "20260721T160016+00:00",
+    "affectedCustomers": 179,
+    "areas": [
+      "MANDURAH"
+    ],
+    "latitudeCentroid": -32.53141,
+    "longitudeCentroid": 115.73101
+  },
+  {
+    "outageId": "INCD-202364-X",
+    "outageType": "F",
+    "startTime": "20260728T080000+08:00",
+    "restorationTime": "20260728T150000+08:00",
+    "onMap": true,
+    "outageUpdatedTime": "20260718T160020+00:00",
+    "affectedCustomers": 21,
+    "areas": [
+      "BULLFINCH"
+    ],
+    "latitudeCentroid": -30.98609,
+    "longitudeCentroid": 119.11579
+  },
+  {
+    "outageId": "INCD-202424-X",
+    "outageType": "F",
+    "startTime": "20260805T060000+08:00",
+    "restorationTime": "20260805T170000+08:00",
+    "onMap": true,
+    "outageUpdatedTime": "20260726T160012+00:00",
+    "affectedCustomers": 92,
+    "areas": [
+      "FALCON"
+    ],
+    "latitudeCentroid": -32.5842,
+    "longitudeCentroid": 115.65568
+  },
+  {
+    "outageId": "INCD-2072841-U",
+    "outageType": "F",
+    "startTime": "20260730T080000+08:00",
+    "restorationTime": "20260730T170000+08:00",
+    "onMap": true,
+    "outageUpdatedTime": "20260720T160037+00:00",
+    "affectedCustomers": 44,
+    "areas": [
+      "HILLARYS"
+    ],
+    "latitudeCentroid": -31.81152,
+    "longitudeCentroid": 115.75478
+  }
+]

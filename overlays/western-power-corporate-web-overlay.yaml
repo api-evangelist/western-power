@@ -1,0 +1,22 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the Western Power Corporate Web API
+  version: 1.0.0
+extends: openapi/western-power-corporate-web-openapi.yml
+x-apievangelist:
+  generated: '2026-07-27'
+  method: generated
+actions:
+- target: $.info
+  update:
+    x-apievangelist-provider: western-power
+    x-apievangelist-surface: internal-cms-endpoint
+    x-apievangelist-verified: '2026-07-27'
+    x-apievangelist-note: >-
+      robots.txt disallows /api/ to crawlers. These endpoints exist to serve
+      westernpower.com.au and are not offered for reuse.
+- target: $.paths['/search'].get
+  update:
+    x-apievangelist-note: >-
+      Backed by Optimizely Find. Parameter naming is inconsistent with the other
+      endpoints (pagenumber here, page elsewhere).

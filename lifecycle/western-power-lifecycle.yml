@@ -1,0 +1,70 @@
+generated: '2026-07-27'
+method: searched
+source: >-
+  westernpower.com.au (868-URL sitemap scanned), live header probes 2026-07-27, and
+  the harvested ArcGIS service metadata.
+summary: >-
+  There is no API lifecycle. No versioning scheme, no deprecation policy, no sunset
+  signalling, no changelog, no status page for the endpoints, no SLA and no support
+  channel. Every surface here is an implementation detail of a web application that
+  Western Power can change or remove without notice, and nothing obliges them to
+  announce it.
+versioning:
+  scheme: none
+  current: null
+  docs: null
+  detail: >-
+    No version in the path, header or query for /api/corp/outage/*. The client
+    bundle references /api/corp/v2/ and /api/corp/v3/ prefixes for other
+    (authenticated) endpoints, which shows an internal convention that has not been
+    applied to the public surface. The corporate site emits build number 2026.7.7.1
+    in an HTML comment. ArcGIS reports platform currentVersion 12.
+deprecation:
+  policy_url: null
+  sunset_header: false
+  deprecation_header: false
+  detail: >-
+    No RFC 8594 Sunset header, no Deprecation header, no deprecation policy page.
+    No operation in any captured description is marked deprecated.
+sla:
+  url: null
+  uptime_target: null
+  detail: >-
+    No API SLA. Western Power publishes network reliability performance under its
+    regulatory obligations, but nothing covering availability of these endpoints.
+status_page:
+  api_status_page: null
+  detail: >-
+    Western Power publishes an outage tracker at westernpower.com.au/outages/ — but
+    that reports ELECTRICITY NETWORK outages, not the availability of these
+    endpoints. There is deliberately no StatusPage pointer in apis.yml: treating a
+    power-outage map as an API status page would be a category error.
+support:
+  developer_support: none
+  general_contact: https://www.westernpower.com.au/about/contact-us/
+  emergencies_and_outages_line: 13 13 51
+  detail: >-
+    No developer support channel, no forum, no issue tracker (the verified GitHub
+    organisation github.com/Western-Power has zero public repositories), and no
+    email address published for the API surface.
+changelog:
+  url: null
+  detail: >-
+    No API changelog. westernpower.com.au/news/ is a corporate newsroom, not a
+    release feed. The /api/corp/newsarticles endpoint serves that newsroom.
+stability:
+  outage_web_api: >-
+    Undocumented internal endpoints declared in page markup
+    (all-outages-endpoint / single-outage-endpoint attributes). robots.txt
+    disallows /api/ to crawlers. Stable in practice because the public outage
+    tracker depends on them, but unversioned and uncommitted.
+  arcgis_feature_service: >-
+    Hosted ArcGIS Online service. hasStaticData true, editingInfo shows the data
+    layer edited continuously (lastEditDate 2026-07-26) and the schema last changed
+    2025-12-14. Service item id 34231924fe1d43f2a8792da7abe597b7 could be
+    re-published under a new id at any time, which would break every caller.
+  slip_secure_services: >-
+    Governed by the WA Government SLIP platform and Western Power's Data Licence
+    Terms and Conditions; dataset-level metadata on catalogue.data.wa.gov.au
+    carries update frequencies.
+deprecated_operations: []
