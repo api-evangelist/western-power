@@ -199,6 +199,8 @@ apis:
   - type: Application
     url: https://www.westernpower.com.au/resources-education/calculators-tools/network-capacity-mapping-tool/
 common:
+- type: MCPServer
+  url: mcp/western-power-mcp.yml
 - type: AgenticAccess
   url: agentic-access/western-power-agentic-access.yml
 - type: DomainSecurity
