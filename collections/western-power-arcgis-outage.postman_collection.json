@@ -1,0 +1,406 @@
+{
+  "item": [
+    {
+      "id": "931d802b-ce50-47a9-bf70-fd7721355f30",
+      "name": "Metadata",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "f0c35aec-2168-45c2-b977-99627662f2b4",
+          "name": "Get feature service metadata",
+          "request": {
+            "name": "Get feature service metadata",
+            "description": {
+              "content": "Self-describing service document listing layers, extents, capabilities and formats.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "f",
+                  "value": "html",
+                  "description": "Response format."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "5a7528e3-d2b7-47ab-ac0c-8ede5c05580d",
+              "name": "Service metadata.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "f",
+                      "value": "html"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a7cb303f-3ec5-49d2-a96f-751274495edc",
+          "name": "Get layer 0 (Outage_Areas) metadata",
+          "request": {
+            "name": "Get layer 0 (Outage_Areas) metadata",
+            "description": {
+              "content": "Layer document with the full field list, indexes, query capabilities, `maxRecordCount` (2000) and the 120-second `cacheMaxAge`.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "0"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "f",
+                  "value": "html",
+                  "description": "Response format."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "be0dadca-03d4-4aa5-9058-d711ba197935",
+              "name": "Layer metadata.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "0"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "f",
+                      "value": "html"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "2781870b-c4be-417f-8390-345638cad357",
+      "name": "Query",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "f834c711-82e4-4f0f-b465-477d489c92cf",
+          "name": "Query outage area polygons",
+          "request": {
+            "name": "Query outage area polygons",
+            "description": {
+              "content": "Standard ArcGIS REST query against layer 0. Supports SQL `where` clauses, attribute selection, spatial filters, ordering, statistics and pagination (`resultOffset` + `resultRecordCount`, `advancedQueryCapabilities.supportsPagination` is true). Page size is capped at 2000 features (32000 with `returnGeometry=false`). Output formats are JSON, geoJSON and PBF.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "0",
+                "query"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "where",
+                  "value": "1=1",
+                  "description": "SQL-92 where clause. Use `1=1` to select all."
+                },
+                {
+                  "disabled": false,
+                  "key": "outFields",
+                  "value": "*",
+                  "description": "Comma-separated field list, or `*`."
+                },
+                {
+                  "disabled": false,
+                  "key": "returnGeometry",
+                  "value": "true"
+                },
+                {
+                  "disabled": false,
+                  "key": "geometry",
+                  "value": "<string>",
+                  "description": "Spatial filter geometry (Esri JSON or comma-separated envelope)."
+                },
+                {
+                  "disabled": false,
+                  "key": "geometryType",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "spatialRel",
+                  "value": "esriSpatialRelIntersects",
+                  "description": "Spatial relationship. The layer advertises esriSpatialRelIntersects, Contains, Crosses, EnvelopeIntersects, IndexIntersects, Overlaps, Touches, Within, Disjoint and Relation."
+                },
+                {
+                  "disabled": false,
+                  "key": "inSR",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "outSR",
+                  "value": "<string>",
+                  "description": "Output spatial reference. The layer's native SR is 102100/3857."
+                },
+                {
+                  "disabled": false,
+                  "key": "orderByFields",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "returnCountOnly",
+                  "value": "false"
+                },
+                {
+                  "disabled": false,
+                  "key": "resultOffset",
+                  "value": "<integer>",
+                  "description": "Pagination offset."
+                },
+                {
+                  "disabled": false,
+                  "key": "resultRecordCount",
+                  "value": "<integer>",
+                  "description": "Page size, capped at 2000 (32000 when returnGeometry=false)."
+                },
+                {
+                  "disabled": false,
+                  "key": "f",
+                  "value": "json",
+                  "description": "Response format. `supportedQueryFormats` is \"JSON, geoJSON, PBF\"."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a414a763-4def-4abb-95dd-bc5fb531cb74",
+              "name": "Query result. ArcGIS returns HTTP 200 for errors too — check for an `error` object in the body.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "0",
+                    "query"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "where",
+                      "value": "1=1"
+                    },
+                    {
+                      "key": "outFields",
+                      "value": "*"
+                    },
+                    {
+                      "key": "returnGeometry",
+                      "value": "true"
+                    },
+                    {
+                      "key": "geometry",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "geometryType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "spatialRel",
+                      "value": "esriSpatialRelIntersects"
+                    },
+                    {
+                      "key": "inSR",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "outSR",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "orderByFields",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "returnCountOnly",
+                      "value": "false"
+                    },
+                    {
+                      "key": "resultOffset",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "resultRecordCount",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "f",
+                      "value": "json"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"objectIdFieldName\": \"string\",\n  \"globalIdFieldName\": \"string\",\n  \"geometryType\": \"string\",\n  \"spatialReference\": {},\n  \"exceededTransferLimit\": true,\n  \"features\": [\n    {\n      \"attributes\": {\n        \"OBJECTID\": 4684,\n        \"OUTAGETYPE\": \"string\",\n        \"INCIDENTREF\": \"string\",\n        \"ENARNUMBER\": \"string\",\n        \"OUTAGESTARTTIME\": \"string\",\n        \"ESTIMATEDRESTORATIONTIME\": \"string\",\n        \"PLANNEDOUTAGE\": \"string\",\n        \"NOCUSTOMERSIMPACTED\": 4347,\n        \"TIMEADDED\": 1825,\n        \"AFFECTED_AREA\": \"string\",\n        \"AFFECTED_AREA_NOCUSTOMERS\": \"string\",\n        \"Tags\": \"string\",\n        \"SHAPE__Area\": 8575.306701948311,\n        \"SHAPE__Length\": 3494.7603723531297\n      },\n      \"geometry\": {}\n    },\n    {\n      \"attributes\": {\n        \"OBJECTID\": 8554,\n        \"OUTAGETYPE\": \"string\",\n        \"INCIDENTREF\": \"string\",\n        \"ENARNUMBER\": \"string\",\n        \"OUTAGESTARTTIME\": \"string\",\n        \"ESTIMATEDRESTORATIONTIME\": \"string\",\n        \"PLANNEDOUTAGE\": \"string\",\n        \"NOCUSTOMERSIMPACTED\": 4986,\n        \"TIMEADDED\": 5724,\n        \"AFFECTED_AREA\": \"string\",\n        \"AFFECTED_AREA_NOCUSTOMERS\": \"string\",\n        \"Tags\": \"string\",\n        \"SHAPE__Area\": 9720.355459646413,\n        \"SHAPE__Length\": 6871.210248425513\n      },\n      \"geometry\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://services2.arcgis.com/tBLxde4cxSlNUxsM/ArcGIS/rest/services/WP_Outage_Prod/FeatureServer",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "a726ae43-bfe1-422e-8b39-5122dd1a04a4",
+    "name": "Western Power Outage Areas Feature Service (ArcGIS REST)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Esri ArcGIS Online hosted feature service (`WP_Outage_Prod`, layer 0 `Outage_Areas`) that serves the outage polygons behind the public Western Power outage tracker. The service answers anonymous requests, is self-describing through the standard ArcGIS REST `?f=json` metadata convention, and advertises only the `Query` capability. This description was DERIVED BY API EVANGELIST from the service metadata harvested verbatim to `arcgis/wp-outage-featureserver.json` and `arcgis/wp-outage-layer0-outage-areas.json` on 2026-07-27; the parameter set is the Esri ArcGIS REST Query interface, and the response fields are the layer's own declared field list. Western Power publishes no documentation, terms of use, SLA or deprecation policy for it.",
+      "type": "text/plain"
+    }
+  }
+}

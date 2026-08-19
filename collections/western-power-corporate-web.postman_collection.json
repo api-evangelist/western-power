@@ -1,0 +1,426 @@
+{
+  "item": [
+    {
+      "id": "a0d8be19-5676-4655-be76-607af0e949ad",
+      "name": "Search",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "63dfffd0-8c58-44b4-90bc-8b222ce69325",
+          "name": "Search westernpower.com.au",
+          "request": {
+            "name": "Search westernpower.com.au",
+            "description": {
+              "content": "Full-site search over the corporate site, backed by Optimizely Find. Returns paged `hits`, a `didYouMean` suggestion, facet `types`, and — uniquely — an embedded suburb `outage` rollup so a search box can surface outage status inline. Observed 3,632 total matches for an empty query.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "search"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "query",
+                  "value": "<string>",
+                  "description": "Search term."
+                },
+                {
+                  "disabled": false,
+                  "key": "pagenumber",
+                  "value": "1",
+                  "description": "1-based page index."
+                },
+                {
+                  "disabled": false,
+                  "key": "pageSize",
+                  "value": "<integer>",
+                  "description": "Results per page. The site's type-ahead uses 5."
+                },
+                {
+                  "disabled": false,
+                  "key": "type",
+                  "value": "<string>",
+                  "description": "Facet/content-type filter, taken from the `types` array of a prior response."
+                },
+                {
+                  "disabled": false,
+                  "key": "includefacets",
+                  "value": "<boolean>",
+                  "description": "Whether to compute the `types` facet list."
+                },
+                {
+                  "disabled": false,
+                  "key": "includeSuburbOutage",
+                  "value": "<boolean>",
+                  "description": "Whether to populate the embedded `outage` rollup."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a925db73-a173-49d5-a94f-4913ac4a1c79",
+              "name": "Search results.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "query",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "pagenumber",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "includefacets",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "includeSuburbOutage",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"outage\": {},\n  \"totalMatching\": 7267,\n  \"currentPage\": 9505,\n  \"searchTerm\": \"string\",\n  \"didYouMean\": \"string\",\n  \"hits\": [\n    {\n      \"title\": \"string\",\n      \"description\": \"string\",\n      \"url\": \"string\",\n      \"badge\": \"string\",\n      \"additionalInformation\": \"string\"\n    },\n    {\n      \"title\": \"string\",\n      \"description\": \"string\",\n      \"url\": \"string\",\n      \"badge\": \"string\",\n      \"additionalInformation\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "ca786a1d-9546-48ee-b113-7820acf02567",
+      "name": "Content",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "5e24327e-433b-4111-8c1a-34cc0c515fe1",
+          "name": "List news articles",
+          "request": {
+            "name": "List news articles",
+            "description": {
+              "content": "Paged feed behind westernpower.com.au/news/. Returns an empty `newsArticles` array unless `rootPageId` scopes the query to the news section; `totalMatching` and `pageSize` are always returned.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "corp",
+                "newsarticles"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>",
+                  "description": "1-based page index."
+                },
+                {
+                  "disabled": false,
+                  "key": "selectedFilters",
+                  "value": "<string>",
+                  "description": "Repeated filter values, serialised by the client with `qs`."
+                },
+                {
+                  "disabled": false,
+                  "key": "selectedFilters",
+                  "value": "<string>",
+                  "description": "Repeated filter values, serialised by the client with `qs`."
+                },
+                {
+                  "disabled": false,
+                  "key": "rootPageId",
+                  "value": "<string>",
+                  "description": "Optimizely content id of the section to list under."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "00be5aab-c091-45c7-8e27-53dd52acd375",
+              "name": "News article page.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "corp",
+                    "newsarticles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "selectedFilters",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "selectedFilters",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "rootPageId",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"pageSize\": 2277,\n  \"totalMatching\": 2983,\n  \"showFeaturedArticle\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b639fb21-3cfe-4331-8ff6-e96133d4f2f3",
+          "name": "List job vacancies",
+          "request": {
+            "name": "List job vacancies",
+            "description": {
+              "content": "Careers feed behind westernpower.com.au/about/careers/. Returns the open roles with location and posting date, plus the filter and sort option lists the careers page renders.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "corp",
+                "vacancies"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "selectedLocation",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "selectedLocation",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "selectedRole",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "selectedRole",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "selectedSort",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "selectedSearchText",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "ce1555c2-2704-4497-a9aa-9f25e30ec21a",
+              "name": "Vacancy page.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "corp",
+                    "vacancies"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "selectedLocation",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "selectedLocation",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "selectedRole",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "selectedRole",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "selectedSort",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "selectedSearchText",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"vacancies\": [\n    {\n      \"url\": \"string\",\n      \"roleName\": \"string\",\n      \"roleDescription\": \"string\",\n      \"location\": \"string\",\n      \"date\": \"1950-08-15T00:44:55.324Z\"\n    },\n    {\n      \"url\": \"string\",\n      \"roleName\": \"string\",\n      \"roleDescription\": \"string\",\n      \"location\": \"string\",\n      \"date\": \"1988-09-30T22:24:57.670Z\"\n    }\n  ],\n  \"pageSize\": 9370,\n  \"totalMatching\": 9461\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://www.westernpower.com.au/api",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "0980ae3f-ad4d-4958-a5d6-7e175f560afd",
+    "name": "Western Power Corporate Web API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The anonymous read endpoints behind westernpower.com.au itself — site search, the news article feed and the careers vacancy feed. These are internal endpoints of the Optimizely/EPiServer corporate site, declared in the site's JavaScript bundle (`/static/assets/app.*.js`) and reachable without authentication. `robots.txt` disallows `/api/` to crawlers; Western Power publishes no documentation, terms of use or SLA for them. This description was DERIVED BY API EVANGELIST from live probes on 2026-07-27 and is not published by Western Power.\n\nContact Support:\n Name: Western Power",
+      "type": "text/plain"
+    }
+  }
+}

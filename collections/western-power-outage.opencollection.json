@@ -1,0 +1,67 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Western Power Outage Web API",
+    "version": "2026.7.7.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Outages",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List all current and upcoming outages",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.westernpower.com.au/api/corp/outage/all-outages"
+          },
+          "docs": "Returns every outage record the outage tracker plots — planned (`F`) and unplanned (`U`) — as a flat JSON array with no pagination and no envelope. Observed 211 records and a 61 KB payload on 2026-07-27. Takes no parameters."
+        },
+        {
+          "info": {
+            "name": "Get one outage with tracker presentation detail",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.westernpower.com.au/api/corp/outage/details/:outageId",
+            "params": [
+              {
+                "name": "outageId",
+                "value": "",
+                "type": "path",
+                "description": "Outage identifier as returned by `listAllOutages`, e.g. `INCD-2015011-U`."
+              }
+            ]
+          },
+          "docs": "Returns the full outage record plus the content the tracker renders around it — related FAQ links, the add-to-calendar modal copy, an update `historyGroup`, and bushfire / total-fire-ban / weather / fire-weather-warning impact flags. An unknown identifier returns HTTP 204 with an empty body rather than 404."
+        },
+        {
+          "info": {
+            "name": "Get outage counts for a suburb",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.westernpower.com.au/api/corp/outage/status/:suburb",
+            "params": [
+              {
+                "name": "suburb",
+                "value": "",
+                "type": "path",
+                "description": "Suburb name, e.g. `BOORAGOON`. Case-insensitive."
+              }
+            ]
+          },
+          "docs": "Returns a rolled-up outage status for a suburb name — in-flight, resolved and planned counts, affected customers, and a human-readable restoration or planned-outage message. Accepts a comma-separated list, of which the client uses the first value. Unmatched names return zeroed counts with the submitted name title-cased in `suburb`, never an error status."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

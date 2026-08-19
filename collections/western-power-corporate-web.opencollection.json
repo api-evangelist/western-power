@@ -1,0 +1,144 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Western Power Corporate Web API",
+    "version": "2026.7.7.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Search",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Search westernpower.com.au",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.westernpower.com.au/api/search",
+            "params": [
+              {
+                "name": "query",
+                "value": "",
+                "type": "query",
+                "description": "Search term."
+              },
+              {
+                "name": "pagenumber",
+                "value": "",
+                "type": "query",
+                "description": "1-based page index."
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "Results per page. The site's type-ahead uses 5."
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Facet/content-type filter, taken from the `types` array of a prior response."
+              },
+              {
+                "name": "includefacets",
+                "value": "",
+                "type": "query",
+                "description": "Whether to compute the `types` facet list."
+              },
+              {
+                "name": "includeSuburbOutage",
+                "value": "",
+                "type": "query",
+                "description": "Whether to populate the embedded `outage` rollup."
+              }
+            ]
+          },
+          "docs": "Full-site search over the corporate site, backed by Optimizely Find. Returns paged `hits`, a `didYouMean` suggestion, facet `types`, and — uniquely — an embedded suburb `outage` rollup so a search box can surface outage status inline. Observed 3,632 total matches for an empty query."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Content",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List news articles",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.westernpower.com.au/api/corp/newsarticles",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "1-based page index."
+              },
+              {
+                "name": "selectedFilters",
+                "value": "",
+                "type": "query",
+                "description": "Repeated filter values, serialised by the client with `qs`."
+              },
+              {
+                "name": "rootPageId",
+                "value": "",
+                "type": "query",
+                "description": "Optimizely content id of the section to list under."
+              }
+            ]
+          },
+          "docs": "Paged feed behind westernpower.com.au/news/. Returns an empty `newsArticles` array unless `rootPageId` scopes the query to the news section; `totalMatching` and `pageSize` are always returned."
+        },
+        {
+          "info": {
+            "name": "List job vacancies",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.westernpower.com.au/api/corp/vacancies",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "selectedLocation",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "selectedRole",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "selectedSort",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "selectedSearchText",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Careers feed behind westernpower.com.au/about/careers/. Returns the open roles with location and posting date, plus the filter and sort option lists the careers page renders."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

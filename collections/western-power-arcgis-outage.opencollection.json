@@ -1,0 +1,150 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Western Power Outage Areas Feature Service (ArcGIS REST)",
+    "version": "12"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Metadata",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get feature service metadata",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://services2.arcgis.com/tBLxde4cxSlNUxsM/ArcGIS/rest/services/WP_Outage_Prod/FeatureServer/",
+            "params": [
+              {
+                "name": "f",
+                "value": "",
+                "type": "query",
+                "description": "Response format."
+              }
+            ]
+          },
+          "docs": "Self-describing service document listing layers, extents, capabilities and formats."
+        },
+        {
+          "info": {
+            "name": "Get layer 0 (Outage_Areas) metadata",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://services2.arcgis.com/tBLxde4cxSlNUxsM/ArcGIS/rest/services/WP_Outage_Prod/FeatureServer/0",
+            "params": [
+              {
+                "name": "f",
+                "value": "",
+                "type": "query",
+                "description": "Response format."
+              }
+            ]
+          },
+          "docs": "Layer document with the full field list, indexes, query capabilities, `maxRecordCount` (2000) and the 120-second `cacheMaxAge`."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Query",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Query outage area polygons",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://services2.arcgis.com/tBLxde4cxSlNUxsM/ArcGIS/rest/services/WP_Outage_Prod/FeatureServer/0/query",
+            "params": [
+              {
+                "name": "where",
+                "value": "",
+                "type": "query",
+                "description": "SQL-92 where clause. Use `1=1` to select all."
+              },
+              {
+                "name": "outFields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated field list, or `*`."
+              },
+              {
+                "name": "returnGeometry",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "geometry",
+                "value": "",
+                "type": "query",
+                "description": "Spatial filter geometry (Esri JSON or comma-separated envelope)."
+              },
+              {
+                "name": "geometryType",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "spatialRel",
+                "value": "",
+                "type": "query",
+                "description": "Spatial relationship. The layer advertises esriSpatialRelIntersects, Contains, Crosses, EnvelopeIntersects, IndexIntersects, Overlaps, Touches, Within, Disjoint and Relation."
+              },
+              {
+                "name": "inSR",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "outSR",
+                "value": "",
+                "type": "query",
+                "description": "Output spatial reference. The layer's native SR is 102100/3857."
+              },
+              {
+                "name": "orderByFields",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "returnCountOnly",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "resultOffset",
+                "value": "",
+                "type": "query",
+                "description": "Pagination offset."
+              },
+              {
+                "name": "resultRecordCount",
+                "value": "",
+                "type": "query",
+                "description": "Page size, capped at 2000 (32000 when returnGeometry=false)."
+              },
+              {
+                "name": "f",
+                "value": "",
+                "type": "query",
+                "description": "Response format. `supportedQueryFormats` is \"JSON, geoJSON, PBF\"."
+              }
+            ]
+          },
+          "docs": "Standard ArcGIS REST query against layer 0. Supports SQL `where` clauses, attribute selection, spatial filters, ordering, statistics and pagination (`resultOffset` + `resultRecordCount`, `advancedQueryCapabilities.supportsPagination` is true). Page size is capped at 2000 features (32000 with `returnGeometry=false`). Output formats are JSON, geoJSON and PBF."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

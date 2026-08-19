@@ -1,0 +1,316 @@
+{
+  "item": [
+    {
+      "id": "aace7091-35de-4414-8a63-c88d99168289",
+      "name": "Outages",
+      "description": {
+        "content": "Live planned and unplanned outage data for the South West Interconnected System.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a6693dc8-a46f-4e74-8c64-d54253bc7e62",
+          "name": "List all current and upcoming outages",
+          "request": {
+            "name": "List all current and upcoming outages",
+            "description": {
+              "content": "Returns every outage record the outage tracker plots — planned (`F`) and unplanned (`U`) — as a flat JSON array with no pagination and no envelope. Observed 211 records and a 61 KB payload on 2026-07-27. Takes no parameters.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "all-outages"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "ffe86eb5-1711-4884-b3cf-5e63bcaeee93",
+              "name": "Array of outage summary records.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "all-outages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"outageId\": \"INCD-2015011-U\",\n    \"outageType\": \"F\",\n    \"startTime\": \"20260728T190000+08:00\",\n    \"restorationTime\": \"20260729T050000+08:00\",\n    \"onMap\": true,\n    \"outageUpdatedTime\": \"20260718T160020+00:00\",\n    \"affectedCustomers\": 126,\n    \"areas\": [\n      \"BOORAGOON\"\n    ],\n    \"latitudeCentroid\": -32.03583,\n    \"longitudeCentroid\": 115.83067\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "83c1d476-43d5-4811-a4a6-a43ea78b2364",
+          "name": "Get one outage with tracker presentation detail",
+          "request": {
+            "name": "Get one outage with tracker presentation detail",
+            "description": {
+              "content": "Returns the full outage record plus the content the tracker renders around it — related FAQ links, the add-to-calendar modal copy, an update `historyGroup`, and bushfire / total-fire-ban / weather / fire-weather-warning impact flags. An unknown identifier returns HTTP 204 with an empty body rather than 404.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "details",
+                ":outageId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "outageId",
+                  "description": "(Required) Outage identifier as returned by `listAllOutages`, e.g. `INCD-2015011-U`."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "63371261-566f-493b-a32a-c20ebdf266bc",
+              "name": "Outage detail record.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "details",
+                    ":outageId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "outageId",
+                      "description": "(Required) Outage identifier as returned by `listAllOutages`, e.g. `INCD-2015011-U`."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"outageId\": \"string\",\n  \"outageType\": \"F\",\n  \"startTime\": \"string\",\n  \"restorationTime\": \"string\",\n  \"onMap\": true,\n  \"outageUpdatedTime\": \"string\",\n  \"affectedCustomers\": 8007,\n  \"areas\": [\n    \"string\",\n    \"string\"\n  ],\n  \"latitudeCentroid\": 3338.9703544616277,\n  \"longitudeCentroid\": 8998.922766936683,\n  \"moreInformationList\": [\n    {\n      \"title\": \"string\",\n      \"url\": \"string\"\n    },\n    {\n      \"title\": \"string\",\n      \"url\": \"string\"\n    }\n  ],\n  \"calendarModal\": {},\n  \"extendedOutageCurrent\": true,\n  \"tags\": [\n    \"string\",\n    \"string\"\n  ],\n  \"mayBeImpactedByBushfire\": true,\n  \"mayBeImpactedByTotalFireBan\": false,\n  \"mayBeImpactedByWeather\": false,\n  \"mayBeImpactedByFireWeatherWarning\": true,\n  \"activeIncidentsThatMayImpactOutageHeading\": \"string\",\n  \"activeIncidentsThatMayImpactOutageDescription\": \"string\",\n  \"activeIncidentsViewMoreLabel\": \"string\",\n  \"activeIncidentsViewMoreUrl\": \"string\",\n  \"fireWeatherWarningTagToMatch\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "50371545-028f-41e2-a12a-69785a1c096c",
+              "name": "No content — the identifier did not match an outage. Observed for `/details/NOPE-123` on 2026-07-27.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "details",
+                    ":outageId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "outageId",
+                      "description": "(Required) Outage identifier as returned by `listAllOutages`, e.g. `INCD-2015011-U`."
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cdd88272-f446-4bc3-b165-6a798f8704b1",
+          "name": "Get outage counts for a suburb",
+          "request": {
+            "name": "Get outage counts for a suburb",
+            "description": {
+              "content": "Returns a rolled-up outage status for a suburb name — in-flight, resolved and planned counts, affected customers, and a human-readable restoration or planned-outage message. Accepts a comma-separated list, of which the client uses the first value. Unmatched names return zeroed counts with the submitted name title-cased in `suburb`, never an error status.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "status",
+                ":suburb"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "suburb",
+                  "description": "(Required) Suburb name, e.g. `BOORAGOON`. Case-insensitive."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "5834dbb9-02d8-4b4e-a09b-fd5cf62f0fb3",
+              "name": "Suburb outage status rollup.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "status",
+                    ":suburb"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "suburb",
+                      "description": "(Required) Suburb name, e.g. `BOORAGOON`. Case-insensitive."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorMessage\": \"string\",\n  \"suburb\": \"string\",\n  \"inflightOutageCount\": 8274,\n  \"resolvedOutageCount\": 549,\n  \"affectedCustomers\": 3518,\n  \"outageId\": \"string\",\n  \"restorationTimeFormatted\": \"string\",\n  \"restoredOutageId\": \"string\",\n  \"resolvedRestorationTimeFormatted\": \"string\",\n  \"plannedOutageCount\": 3186,\n  \"plannedOutageId\": \"string\",\n  \"plannedOutageTimeFormatted\": \"string\",\n  \"inflightPlannedOutageCount\": 7477,\n  \"inflightUnPlannedOutagesCount\": 6411\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://www.westernpower.com.au/api/corp/outage",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "e5843505-74cd-43b5-aaf6-4e94804fd3c5",
+    "name": "Western Power Outage Web API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The undocumented but anonymous first-party JSON API that backs the public Western Power outage tracker at westernpower.com.au/outages/. The outage page declares its own endpoints in markup — `all-outages-endpoint=\"/api/corp/outage/all-outages\"` and `single-outage-endpoint=\"/api/corp/outage/details/\"` — and both answer unauthenticated HTTPS GET requests with `application/json`. Western Power publishes no developer portal, no reference documentation, no terms of use and no SLA for this surface. This description was DERIVED BY API EVANGELIST from live probes on 2026-07-27; it is not published by Western Power, and the provider may change or withdraw these endpoints without notice.\n\nContact Support:\n Name: Western Power",
+      "type": "text/plain"
+    }
+  }
+}

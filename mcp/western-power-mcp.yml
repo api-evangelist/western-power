@@ -9,11 +9,9 @@ search:
   - westernpower.com.au (868-URL sitemap; no MCP, agent or AI page)
   - /.well-known/ on every Western Power host (all 404)
   - npm registry and GitHub organisation github.com/Western-Power (0 public repositories)
-  result: >-
-    Western Power operates no MCP server, hosted or otherwise, and has published no
-    agent-facing surface. No MCPServer pointer is wired into apis.yml — the tool list
-    below is a CANDIDATE design derived from the API Evangelist OpenAPI descriptions,
-    not something that exists.
+  result: Western Power operates no MCP server, hosted or otherwise, and has published no agent-facing
+    surface. No MCPServer pointer is wired into apis.yml — the tool list below is a CANDIDATE design derived
+    from the API Evangelist OpenAPI descriptions, not something that exists.
 server:
   name: western-power
   transport: http
@@ -40,8 +38,14 @@ tools:
   source_operation: openapi/western-power-arcgis-outage-openapi.yml#getOutageAreasLayerMetadata
   read_only: true
 notes:
-  - Every candidate tool is a read. There is no write operation on any anonymous
-    Western Power surface, so no tool would need human-in-the-loop escalation.
-  - No tool should be built over the customer, enquiry, organisation or project
-    endpoints referenced in the site's client bundle — those are portal endpoints
-    handling personal information and are out of scope for public tooling.
+- Every candidate tool is a read. There is no write operation on any anonymous Western Power surface,
+  so no tool would need human-in-the-loop escalation.
+- No tool should be built over the customer, enquiry, organisation or project endpoints referenced in
+  the site's client bundle — those are portal endpoints handling personal information and are out of scope
+  for public tooling.
+deployment:
+  mode: none
+  verified: derived
+  tools: 5
+  checked: '2026-08-12'
+  source: catalog MCP census
