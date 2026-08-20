@@ -73,6 +73,12 @@ apis:
   tags:
   - Outages
   - Grid
+  - Real-Time
+  - Electricity
+  - JSON
+  tags_raw:
+  - Outages
+  - Grid
   - Real Time
   - Electricity
   - JSON
@@ -142,6 +148,12 @@ apis:
   humanURL: https://www.westernpower.com.au/outages/
   baseURL: https://services2.arcgis.com/tBLxde4cxSlNUxsM/ArcGIS/rest/services/WP_Outage_Prod/FeatureServer
   tags:
+  - Outages
+  - Grid
+  - GeoJSON
+  - ArcGIS
+  - Real-Time
+  tags_raw:
   - Outages
   - Grid
   - GeoJSON
