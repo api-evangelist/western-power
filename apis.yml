@@ -50,149 +50,22 @@ created: '2026-07-27'
 modified: '2026-07-27'
 specificationVersion: '0.23'
 apis:
-- aid: western-power:western-power-outage-web-api
-  name: Western Power Outage Web API
-  description: The undocumented first-party JSON API behind the public Western Power
-    outage tracker. The outage page declares its own endpoints in markup —
-    all-outages-endpoint="/api/corp/outage/all-outages" and
-    single-outage-endpoint="/api/corp/outage/details/" — and all three operations
-    answer anonymous unauthenticated HTTPS GET with application/json (verified HTTP
-    200 on 2026-07-27). listAllOutages returns every current and upcoming outage as a
-    bare unpaginated array (211 records, 61 KB observed) with incident reference,
-    planned/unplanned type, start and estimated restoration times, customers impacted,
-    affected suburbs and a centroid. getOutageDetails adds an update history and
-    bushfire, total-fire-ban, weather and fire-weather-warning hazard flags, answering
-    an unknown identifier with HTTP 204 rather than 404. getSuburbOutageStatus returns
-    a per-suburb rollup and never signals an error. Western Power publishes no
-    reference, no terms of use, no versioning, no rate limits, no SLA and no support
-    channel for any of it, and robots.txt disallows /api/ to crawlers. The OpenAPI
-    below was derived by API Evangelist from live probes, not published by the
-    provider.
-  humanURL: https://www.westernpower.com.au/outages/
-  baseURL: https://www.westernpower.com.au/api/corp/outage
-  tags:
-  - Outages
-  - Grid
-  - Real-Time
-  - Electricity
-  - JSON
-  tags_raw:
-  - Outages
-  - Grid
-  - Real Time
-  - Electricity
-  - JSON
-  properties:
-  - type: OpenAPI
-    name: OpenAPI 3.1 (derived by API Evangelist from live probes)
-    url: openapi/western-power-outage-openapi.yml
-  - type: Overlay
-    url: overlays/western-power-outage-overlay.yaml
-  - type: Examples
-    name: Live sample responses captured 2026-07-27
-    url: examples/western-power-all-outages-sample.json
-  - type: Examples
-    url: examples/western-power-outage-details-sample.json
-  - type: Examples
-    url: examples/western-power-outage-status-sample.json
-  - type: AgentSkill
-    name: Check Western Power outages
-    url: skills/western-power-check-outages.md
-  - type: Documentation
-    url: https://www.westernpower.com.au/outages/
-- aid: western-power:western-power-corporate-web-api
-  name: Western Power Corporate Web API
-  description: The anonymous read endpoints behind westernpower.com.au itself — site
-    search, the news article feed and the careers vacancy feed. These are internal
-    endpoints of the Optimizely/EPiServer corporate site, declared in the site's own
-    JavaScript bundle and reachable without authentication (verified HTTP 200 on
-    2026-07-27). /api/search is backed by Optimizely Find and returns paged hits, a
-    did-you-mean suggestion, content-type facets and — unusually — an embedded suburb
-    outage rollup so a search box can surface outage status inline. /api/corp/vacancies
-    and /api/corp/newsarticles serve the careers and newsroom listings. robots.txt
-    disallows /api/, and Western Power publishes no documentation, terms of use or SLA
-    for these endpoints. The OpenAPI below was derived by API Evangelist from live
-    probes and from parameter names read out of the site's client bundle.
-  humanURL: https://www.westernpower.com.au/
-  baseURL: https://www.westernpower.com.au/api
-  tags:
-  - Search
-  - Content
-  - Careers
-  - News
-  - JSON
-  properties:
-  - type: OpenAPI
-    name: OpenAPI 3.1 (derived by API Evangelist from live probes)
-    url: openapi/western-power-corporate-web-openapi.yml
-  - type: Overlay
-    url: overlays/western-power-corporate-web-overlay.yaml
-  - type: Examples
-    url: examples/western-power-search-sample.json
-  - type: Examples
-    url: examples/western-power-vacancies-sample.json
-- aid: western-power:western-power-outage-areas-feature-service
-  name: Western Power Outage Areas Feature Service
-  description: Live outage data for the South West Interconnected System, served as
-    an Esri ArcGIS Online hosted feature service (layer 0, "Outage_Areas") that backs
-    the public Western Power outage tracker at westernpower.com.au/outages/. Western
-    Power does not document or advertise this as an API, but the service answers
-    anonymous unauthenticated requests (verified HTTP 200 on 2026-07-27), is
-    self-describing via the standard ArcGIS REST `?f=json` metadata convention, and
-    supports the Query capability with a 2,000-record page size. Each outage polygon
-    carries OUTAGETYPE, INCIDENTREF, ENARNUMBER, OUTAGESTARTTIME,
-    ESTIMATEDRESTORATIONTIME, PLANNEDOUTAGE, NOCUSTOMERSIMPACTED, TIMEADDED,
-    AFFECTED_AREA and AFFECTED_AREA_NOCUSTOMERS. No API key, token or registration is
-    required; equally, no support, SLA, terms of use or deprecation policy is
-    published for it.
-  humanURL: https://www.westernpower.com.au/outages/
-  baseURL: https://services2.arcgis.com/tBLxde4cxSlNUxsM/ArcGIS/rest/services/WP_Outage_Prod/FeatureServer
-  tags:
-  - Outages
-  - Grid
-  - GeoJSON
-  - ArcGIS
-  - Real-Time
-  tags_raw:
-  - Outages
-  - Grid
-  - GeoJSON
-  - ArcGIS
-  - Real Time
-  properties:
-  - type: OpenAPI
-    name: OpenAPI 3.1 (derived by API Evangelist from harvested ArcGIS metadata)
-    url: openapi/western-power-arcgis-outage-openapi.yml
-  - type: Overlay
-    url: overlays/western-power-arcgis-outage-overlay.yaml
-  - type: AgentSkill
-    name: Query Western Power outage geography
-    url: skills/western-power-query-outage-geography.md
-  - type: ServiceMetadata
-    url: arcgis/wp-outage-featureserver.json
-  - type: ServiceMetadata
-    url: arcgis/wp-outage-layer0-outage-areas.json
-  - type: SampleResponse
-    url: arcgis/wp-outage-sample-query-response.json
-  - type: Documentation
-    url: https://www.westernpower.com.au/outages/
 - aid: western-power:western-power-public-secure-services-slip
   name: Western Power Public Secure Services (SLIP)
-  description: Western Power's network asset and capacity spatial data — distribution
-    and transmission overhead powerlines, underground cables, poles, pillars, pits,
-    transformers, enclosures, substations, streetlights, underground power project
-    areas and the Network Capacity Mapping Tool forecast remaining-capacity layers —
-    published as 36 datasets on the WA Government DataWA catalogue and served from
-    the Landgate SLIP platform as ArcGIS REST MapServer/FeatureServer, OGC WFS and
-    OGC WMS endpoints plus GeoJSON, GeoPackage, File Geodatabase and Shapefile
-    downloads. DataWA labels these "open data subject to registering for access";
-    access is automatically granted on registering an email address and agreeing to
-    Western Power's data licence terms and conditions. Anonymous calls are rejected —
-    both the MapServer root and layer 10 returned HTTP 401 Unauthorized on 2026-07-27,
-    and the bulk download host redirects to /Account/Login. Authenticated access uses
-    Esri token authentication via token.slip.wa.gov.au.
+  description: >-
+    Western Power's network asset and capacity spatial data — distribution and transmission overhead powerlines,
+    underground cables, poles, pillars, pits, transformers, enclosures, substations, streetlights, underground
+    power project areas and the Network Capacity Mapping Tool forecast remaining-capacity layers — published
+    as 36 datasets on the WA Government DataWA catalogue and served from the Landgate SLIP platform as
+    ArcGIS REST MapServer/FeatureServer, OGC WFS and OGC WMS endpoints plus GeoJSON, GeoPackage, File
+    Geodatabase and Shapefile downloads. DataWA labels these "open data subject to registering for access";
+    access is automatically granted on registering an email address and agreeing to Western Power's data
+    licence terms and conditions. Anonymous calls are rejected — both the MapServer root and layer 10
+    returned HTTP 401 Unauthorized on 2026-07-27, and the bulk download host redirects to /Account/Login.
+    Authenticated access uses Esri token authentication via token.slip.wa.gov.au.
   humanURL: https://catalogue.data.wa.gov.au/dataset/distribution-overhead-power-lines-wp-031
-  baseURL: https://services.slip.wa.gov.au/arcgis/rest/services/WP_Public_Secure_Services/WP_Public_Secure_Services/MapServer
+  baseURL: >-
+    https://services.slip.wa.gov.au/arcgis/rest/services/WP_Public_Secure_Services/WP_Public_Secure_Services/MapServer
   tags:
   - Open Data
   - GIS
@@ -209,8 +82,159 @@ apis:
   - type: License
     url: https://catalogue.data.wa.gov.au/dataset/wp-licence-terms-and-conditions
   - type: Application
-    url: https://www.westernpower.com.au/resources-education/calculators-tools/network-capacity-mapping-tool/
+    url: >-
+      https://www.westernpower.com.au/resources-education/calculators-tools/network-capacity-mapping-tool/
+- aid: western-power:western-power-content-api
+  name: Western Power Content API
+  description: The Content API from Western Power — 2 operation(s) for content.
+  humanURL: https://www.westernpower.com.au/outages/
+  baseURL: https://www.westernpower.com.au/api/corp/outage
+  tags:
+  - Content
+  properties:
+  - type: OpenAPI
+    url: openapi/western-power-content-api-openapi.yml
+  - type: Examples
+    url: examples/western-power-all-outages-sample.json
+  - type: Examples
+    url: examples/western-power-outage-details-sample.json
+  - type: Examples
+    url: examples/western-power-outage-status-sample.json
+  - type: Documentation
+    url: https://www.westernpower.com.au/outages/
+  - type: Examples
+    url: examples/western-power-search-sample.json
+  - type: Examples
+    url: examples/western-power-vacancies-sample.json
+  - type: ServiceMetadata
+    url: arcgis/wp-outage-featureserver.json
+  - type: ServiceMetadata
+    url: arcgis/wp-outage-layer0-outage-areas.json
+  - type: SampleResponse
+    url: arcgis/wp-outage-sample-query-response.json
+- aid: western-power:western-power-metadata-api
+  name: Western Power Metadata API
+  description: The Metadata API from Western Power — 2 operation(s) for metadata.
+  humanURL: https://www.westernpower.com.au/outages/
+  baseURL: https://www.westernpower.com.au/api/corp/outage
+  tags:
+  - Metadata
+  properties:
+  - type: OpenAPI
+    url: openapi/western-power-metadata-api-openapi.yml
+  - type: Examples
+    url: examples/western-power-all-outages-sample.json
+  - type: Examples
+    url: examples/western-power-outage-details-sample.json
+  - type: Examples
+    url: examples/western-power-outage-status-sample.json
+  - type: Documentation
+    url: https://www.westernpower.com.au/outages/
+  - type: Examples
+    url: examples/western-power-search-sample.json
+  - type: Examples
+    url: examples/western-power-vacancies-sample.json
+  - type: ServiceMetadata
+    url: arcgis/wp-outage-featureserver.json
+  - type: ServiceMetadata
+    url: arcgis/wp-outage-layer0-outage-areas.json
+  - type: SampleResponse
+    url: arcgis/wp-outage-sample-query-response.json
+- aid: western-power:western-power-outages-api
+  name: Western Power Outages API
+  description: Live planned and unplanned outage data for the South West Interconnected System.
+  humanURL: https://www.westernpower.com.au/outages/
+  baseURL: https://www.westernpower.com.au/api/corp/outage
+  tags:
+  - Outages
+  properties:
+  - type: OpenAPI
+    url: openapi/western-power-outages-api-openapi.yml
+  - type: Examples
+    url: examples/western-power-all-outages-sample.json
+  - type: Examples
+    url: examples/western-power-outage-details-sample.json
+  - type: Examples
+    url: examples/western-power-outage-status-sample.json
+  - type: Documentation
+    url: https://www.westernpower.com.au/outages/
+  - type: Examples
+    url: examples/western-power-search-sample.json
+  - type: Examples
+    url: examples/western-power-vacancies-sample.json
+  - type: ServiceMetadata
+    url: arcgis/wp-outage-featureserver.json
+  - type: ServiceMetadata
+    url: arcgis/wp-outage-layer0-outage-areas.json
+  - type: SampleResponse
+    url: arcgis/wp-outage-sample-query-response.json
+- aid: western-power:western-power-query-api
+  name: Western Power Query API
+  description: The Query API from Western Power — 1 operation(s) for query.
+  humanURL: https://www.westernpower.com.au/outages/
+  baseURL: https://www.westernpower.com.au/api/corp/outage
+  tags:
+  - Query
+  properties:
+  - type: OpenAPI
+    url: openapi/western-power-query-api-openapi.yml
+  - type: Examples
+    url: examples/western-power-all-outages-sample.json
+  - type: Examples
+    url: examples/western-power-outage-details-sample.json
+  - type: Examples
+    url: examples/western-power-outage-status-sample.json
+  - type: Documentation
+    url: https://www.westernpower.com.au/outages/
+  - type: Examples
+    url: examples/western-power-search-sample.json
+  - type: Examples
+    url: examples/western-power-vacancies-sample.json
+  - type: ServiceMetadata
+    url: arcgis/wp-outage-featureserver.json
+  - type: ServiceMetadata
+    url: arcgis/wp-outage-layer0-outage-areas.json
+  - type: SampleResponse
+    url: arcgis/wp-outage-sample-query-response.json
+- aid: western-power:western-power-search-api
+  name: Western Power Search API
+  description: The Search API from Western Power — 1 operation(s) for search.
+  humanURL: https://www.westernpower.com.au/outages/
+  baseURL: https://www.westernpower.com.au/api/corp/outage
+  tags:
+  - Search
+  properties:
+  - type: OpenAPI
+    url: openapi/western-power-search-api-openapi.yml
+  - type: Examples
+    url: examples/western-power-all-outages-sample.json
+  - type: Examples
+    url: examples/western-power-outage-details-sample.json
+  - type: Examples
+    url: examples/western-power-outage-status-sample.json
+  - type: Documentation
+    url: https://www.westernpower.com.au/outages/
+  - type: Examples
+    url: examples/western-power-search-sample.json
+  - type: Examples
+    url: examples/western-power-vacancies-sample.json
+  - type: ServiceMetadata
+    url: arcgis/wp-outage-featureserver.json
+  - type: ServiceMetadata
+    url: arcgis/wp-outage-layer0-outage-areas.json
+  - type: SampleResponse
+    url: arcgis/wp-outage-sample-query-response.json
 common:
+- type: Overlay
+  url: overlays/western-power-outage-overlay.yaml
+- type: AgentSkill
+  url: skills/western-power-check-outages.md
+- type: Overlay
+  url: overlays/western-power-corporate-web-overlay.yaml
+- type: Overlay
+  url: overlays/western-power-arcgis-outage-overlay.yaml
+- type: AgentSkill
+  url: skills/western-power-query-outage-geography.md
 - type: MCPServer
   url: mcp/western-power-mcp.yml
 - type: AgenticAccess
