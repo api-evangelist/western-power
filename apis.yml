@@ -34,6 +34,18 @@ description: Western Power is the Western Australian state-owned statutory corpo
   through the WA Government DataWA/SLIP portals as "open data subject to registering
   for access" under Western Power's own data licence — WFS, WMS and ArcGIS REST
   endpoints that return HTTP 401 to an anonymous caller.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 image: https://www.westernpower.com.au/faviconImages/apple-touch-icon.png
 tags:
 - Energy
