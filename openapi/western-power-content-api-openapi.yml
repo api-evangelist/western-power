@@ -1,0 +1,141 @@
+openapi: 3.2.0
+info:
+  title: Western Power Corporate Web Content API
+  version: 2026.7.7.1
+  description: The anonymous read endpoints behind westernpower.com.au itself — site search, the news article feed and the careers vacancy feed. These are internal endpoints of the Optimizely/EPiServer corporate site, declared in the site's JavaScript bundle (`/static/assets/app.*.js`) and reachable without authentication. `robots.txt` disallows `/api/` to crawlers; Western Power publishes no documentation, terms of use or SLA for them. This description was DERIVED BY API EVANGELIST from live probes on 2026-07-27 and is not published by Western Power.
+  x-apievangelist-provenance:
+    method: derived
+    derived_by: API Evangelist
+    derived_from: live HTTP probes of https://www.westernpower.com.au/api/* plus parameter names read from the site's own client bundle /static/assets/app.18c3b7f4.js
+    probe_date: '2026-07-27'
+    provider_published: false
+  contact:
+    name: Western Power
+    url: https://www.westernpower.com.au/contact-us/
+servers:
+- url: https://www.westernpower.com.au/api
+  description: Production (Cloudflare-fronted, anonymous)
+tags:
+- name: Content
+paths:
+  /corp/newsarticles:
+    get:
+      tags:
+      - Content
+      operationId: listNewsArticles
+      summary: List news articles
+      description: Paged feed behind westernpower.com.au/news/. Returns an empty `newsArticles` array unless `rootPageId` scopes the query to the news section; `totalMatching` and `pageSize` are always returned.
+      parameters:
+      - name: page
+        in: query
+        description: 1-based page index.
+        schema:
+          type: integer
+      - name: selectedFilters
+        in: query
+        description: Repeated filter values, serialised by the client with `qs`.
+        schema:
+          type: array
+          items:
+            type: string
+      - name: rootPageId
+        in: query
+        description: Optimizely content id of the section to list under.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: News article page.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewsArticlePage'
+  /corp/vacancies:
+    get:
+      tags:
+      - Content
+      operationId: listVacancies
+      summary: List job vacancies
+      description: Careers feed behind westernpower.com.au/about/careers/. Returns the open roles with location and posting date, plus the filter and sort option lists the careers page renders.
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+      - name: selectedLocation
+        in: query
+        schema:
+          type: array
+          items:
+            type: string
+      - name: selectedRole
+        in: query
+        schema:
+          type: array
+          items:
+            type: string
+      - name: selectedSort
+        in: query
+        schema:
+          type: string
+      - name: selectedSearchText
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Vacancy page.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VacancyPage'
+components:
+  schemas:
+    Vacancy:
+      type: object
+      properties:
+        url:
+          type: string
+        roleName:
+          type: string
+        roleDescription:
+          type:
+          - string
+          - 'null'
+        location:
+          type: string
+        date:
+          type: string
+          format: date-time
+    NewsArticlePage:
+      type: object
+      properties:
+        newsArticles:
+          type: array
+          items:
+            type: object
+        pageSize:
+          type: integer
+        totalMatching:
+          type: integer
+        showFeaturedArticle:
+          type: boolean
+    VacancyPage:
+      type: object
+      properties:
+        vacancies:
+          type: array
+          items:
+            $ref: '#/components/schemas/Vacancy'
+        pageSize:
+          type: integer
+        totalMatching:
+          type: integer
+        filterArray:
+          type: array
+          items:
+            type: object
+        sortingFilter:
+          type: array
+          items:
+            type: object

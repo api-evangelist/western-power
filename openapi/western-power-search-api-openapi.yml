@@ -1,0 +1,106 @@
+openapi: 3.2.0
+info:
+  title: Western Power Corporate Web Search API
+  version: 2026.7.7.1
+  description: The anonymous read endpoints behind westernpower.com.au itself — site search, the news article feed and the careers vacancy feed. These are internal endpoints of the Optimizely/EPiServer corporate site, declared in the site's JavaScript bundle (`/static/assets/app.*.js`) and reachable without authentication. `robots.txt` disallows `/api/` to crawlers; Western Power publishes no documentation, terms of use or SLA for them. This description was DERIVED BY API EVANGELIST from live probes on 2026-07-27 and is not published by Western Power.
+  x-apievangelist-provenance:
+    method: derived
+    derived_by: API Evangelist
+    derived_from: live HTTP probes of https://www.westernpower.com.au/api/* plus parameter names read from the site's own client bundle /static/assets/app.18c3b7f4.js
+    probe_date: '2026-07-27'
+    provider_published: false
+  contact:
+    name: Western Power
+    url: https://www.westernpower.com.au/contact-us/
+servers:
+- url: https://www.westernpower.com.au/api
+  description: Production (Cloudflare-fronted, anonymous)
+tags:
+- name: Search
+paths:
+  /search:
+    get:
+      tags:
+      - Search
+      operationId: searchSite
+      summary: Search westernpower.com.au
+      description: Full-site search over the corporate site, backed by Optimizely Find. Returns paged `hits`, a `didYouMean` suggestion, facet `types`, and — uniquely — an embedded suburb `outage` rollup so a search box can surface outage status inline. Observed 3,632 total matches for an empty query.
+      parameters:
+      - name: query
+        in: query
+        description: Search term.
+        schema:
+          type: string
+      - name: pagenumber
+        in: query
+        description: 1-based page index.
+        schema:
+          type: integer
+          default: 1
+      - name: pageSize
+        in: query
+        description: Results per page. The site's type-ahead uses 5.
+        schema:
+          type: integer
+      - name: type
+        in: query
+        description: Facet/content-type filter, taken from the `types` array of a prior response.
+        schema:
+          type: string
+      - name: includefacets
+        in: query
+        description: Whether to compute the `types` facet list.
+        schema:
+          type: boolean
+      - name: includeSuburbOutage
+        in: query
+        description: Whether to populate the embedded `outage` rollup.
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: Search results.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResults'
+components:
+  schemas:
+    SearchResults:
+      type: object
+      properties:
+        outage:
+          type: object
+          description: Embedded suburb outage rollup, same shape as the outage API's suburb status.
+        totalMatching:
+          type: integer
+        currentPage:
+          type: integer
+        searchTerm:
+          type:
+          - string
+          - 'null'
+        didYouMean:
+          type: string
+        hits:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchHit'
+        types:
+          type: array
+          description: Content-type facets with counts.
+          items:
+            type: object
+    SearchHit:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        url:
+          type: string
+        badge:
+          type: string
+        additionalInformation:
+          type: string

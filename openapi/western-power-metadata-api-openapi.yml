@@ -1,0 +1,67 @@
+openapi: 3.2.0
+info:
+  title: Western Power Outage Areas Feature Service (ArcGIS REST) Metadata API
+  version: '12'
+  description: Esri ArcGIS Online hosted feature service (`WP_Outage_Prod`, layer 0 `Outage_Areas`) that serves the outage polygons behind the public Western Power outage tracker. The service answers anonymous requests, is self-describing through the standard ArcGIS REST `?f=json` metadata convention, and advertises only the `Query` capability. This description was DERIVED BY API EVANGELIST from the service metadata harvested verbatim to `arcgis/wp-outage-featureserver.json` and `arcgis/wp-outage-layer0-outage-areas.json` on 2026-07-27; the parameter set is the Esri ArcGIS REST Query interface, and the response fields are the layer's own declared field list. Western Power publishes no documentation, terms of use, SLA or deprecation policy for it.
+  x-apievangelist-provenance:
+    method: derived
+    derived_by: API Evangelist
+    derived_from:
+    - arcgis/wp-outage-featureserver.json
+    - arcgis/wp-outage-layer0-outage-areas.json
+    - arcgis/wp-outage-sample-query-response.json
+    probe_date: '2026-07-27'
+    provider_published: false
+  x-service-capabilities: Query
+  x-max-record-count: 2000
+servers:
+- url: https://services2.arcgis.com/tBLxde4cxSlNUxsM/ArcGIS/rest/services/WP_Outage_Prod/FeatureServer
+  description: ArcGIS Online hosted feature service (anonymous)
+tags:
+- name: Metadata
+paths:
+  /:
+    get:
+      tags:
+      - Metadata
+      operationId: getFeatureServerMetadata
+      summary: Get feature service metadata
+      description: Self-describing service document listing layers, extents, capabilities and formats.
+      parameters:
+      - $ref: '#/components/parameters/Format'
+      responses:
+        '200':
+          description: Service metadata.
+          content:
+            application/json:
+              schema:
+                type: object
+  /0:
+    get:
+      tags:
+      - Metadata
+      operationId: getOutageAreasLayerMetadata
+      summary: Get layer 0 (Outage_Areas) metadata
+      description: Layer document with the full field list, indexes, query capabilities, `maxRecordCount` (2000) and the 120-second `cacheMaxAge`.
+      parameters:
+      - $ref: '#/components/parameters/Format'
+      responses:
+        '200':
+          description: Layer metadata.
+          content:
+            application/json:
+              schema:
+                type: object
+components:
+  parameters:
+    Format:
+      name: f
+      in: query
+      description: Response format.
+      schema:
+        type: string
+        enum:
+        - json
+        - pjson
+        - html
+        default: html
