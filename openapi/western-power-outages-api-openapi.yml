@@ -2,7 +2,7 @@ openapi: 3.2.0
 info:
   title: Western Power Outage Web Outages API
   version: 2026.7.7.1
-  description: The undocumented but anonymous first-party JSON API that backs the public Western Power outage tracker at westernpower.com.au/outages/. The outage page declares its own endpoints in markup — `all-outages-endpoint="/api/corp/outage/all-outages"` and `single-outage-endpoint="/api/corp/outage/details/"` — and both answer unauthenticated HTTPS GET requests with `application/json`. Western Power publishes no developer portal, no reference documentation, no terms of use and no SLA for this surface. This description was DERIVED BY API EVANGELIST from live probes on 2026-07-27; it is not published by Western Power, and the provider may change or withdraw these endpoints without notice.
+  description: The undocumented but anonymous first-party JSON API that backs the public Western Power outage tracker at westernpower.com.au/outages/.
   x-apievangelist-provenance:
     method: derived
     derived_by: API Evangelist
@@ -145,56 +145,6 @@ components:
           type: integer
         inflightUnPlannedOutagesCount:
           type: integer
-    OutageSummary:
-      type: object
-      description: One outage as plotted on the public outage map.
-      properties:
-        outageId:
-          type: string
-          description: Incident reference, e.g. `INCD-2015011-U`.
-        outageType:
-          type: string
-          description: Observed values `F` (planned/future works, 208 of 211 records on 2026-07-27) and `U` (unplanned, 3 records). Western Power publishes no code list; these are the only values seen.
-          examples:
-          - F
-          - U
-        startTime:
-          type: string
-          description: Outage start, basic-format ISO 8601 with AWST offset, e.g. `20260728T190000+08:00`.
-        restorationTime:
-          type: string
-          description: Estimated restoration, same format as `startTime`.
-        onMap:
-          type: boolean
-          description: Whether the outage is plotted on the public map.
-        outageUpdatedTime:
-          type: string
-          description: Last update, basic-format ISO 8601, observed in UTC (`+00:00`).
-        affectedCustomers:
-          type: integer
-          description: Number of customers impacted.
-        areas:
-          type: array
-          description: Affected suburb / locality names, upper case.
-          items:
-            type: string
-        latitudeCentroid:
-          type: number
-          format: double
-        longitudeCentroid:
-          type: number
-          format: double
-      required:
-      - outageId
-      - outageType
-      - startTime
-      - restorationTime
-      - onMap
-      - outageUpdatedTime
-      - affectedCustomers
-      - areas
-      - latitudeCentroid
-      - longitudeCentroid
     OutageDetail:
       type: object
       description: '`OutageSummary` plus the presentation payload the tracker renders. Content fields carry HTML strings and may be null.'
@@ -256,3 +206,53 @@ components:
           type:
           - string
           - 'null'
+    OutageSummary:
+      type: object
+      description: One outage as plotted on the public outage map.
+      properties:
+        outageId:
+          type: string
+          description: Incident reference, e.g. `INCD-2015011-U`.
+        outageType:
+          type: string
+          description: Observed values `F` (planned/future works, 208 of 211 records on 2026-07-27) and `U` (unplanned, 3 records). Western Power publishes no code list; these are the only values seen.
+          examples:
+          - F
+          - U
+        startTime:
+          type: string
+          description: Outage start, basic-format ISO 8601 with AWST offset, e.g. `20260728T190000+08:00`.
+        restorationTime:
+          type: string
+          description: Estimated restoration, same format as `startTime`.
+        onMap:
+          type: boolean
+          description: Whether the outage is plotted on the public map.
+        outageUpdatedTime:
+          type: string
+          description: Last update, basic-format ISO 8601, observed in UTC (`+00:00`).
+        affectedCustomers:
+          type: integer
+          description: Number of customers impacted.
+        areas:
+          type: array
+          description: Affected suburb / locality names, upper case.
+          items:
+            type: string
+        latitudeCentroid:
+          type: number
+          format: double
+        longitudeCentroid:
+          type: number
+          format: double
+      required:
+      - outageId
+      - outageType
+      - startTime
+      - restorationTime
+      - onMap
+      - outageUpdatedTime
+      - affectedCustomers
+      - areas
+      - latitudeCentroid
+      - longitudeCentroid

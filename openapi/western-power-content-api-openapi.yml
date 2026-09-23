@@ -2,7 +2,7 @@ openapi: 3.2.0
 info:
   title: Western Power Corporate Web Content API
   version: 2026.7.7.1
-  description: The anonymous read endpoints behind westernpower.com.au itself — site search, the news article feed and the careers vacancy feed. These are internal endpoints of the Optimizely/EPiServer corporate site, declared in the site's JavaScript bundle (`/static/assets/app.*.js`) and reachable without authentication. `robots.txt` disallows `/api/` to crawlers; Western Power publishes no documentation, terms of use or SLA for them. This description was DERIVED BY API EVANGELIST from live probes on 2026-07-27 and is not published by Western Power.
+  description: The anonymous read endpoints behind westernpower.com.au itself — site search, the news article feed and the careers vacancy feed.
   x-apievangelist-provenance:
     method: derived
     derived_by: API Evangelist

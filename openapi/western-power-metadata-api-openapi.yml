@@ -1,8 +1,8 @@
 openapi: 3.2.0
 info:
-  title: Western Power Outage Areas Feature Service (ArcGIS REST) Metadata API
+  title: Western Power Outage Areas Feature Service (ArcGIS REST)…
   version: '12'
-  description: Esri ArcGIS Online hosted feature service (`WP_Outage_Prod`, layer 0 `Outage_Areas`) that serves the outage polygons behind the public Western Power outage tracker. The service answers anonymous requests, is self-describing through the standard ArcGIS REST `?f=json` metadata convention, and advertises only the `Query` capability. This description was DERIVED BY API EVANGELIST from the service metadata harvested verbatim to `arcgis/wp-outage-featureserver.json` and `arcgis/wp-outage-layer0-outage-areas.json` on 2026-07-27; the parameter set is the Esri ArcGIS REST Query interface, and the response fields are the layer's own declared field list. Western Power publishes no documentation, terms of use, SLA or deprecation policy for it.
+  description: Esri ArcGIS Online hosted feature service (`WP_Outage_Prod`, layer 0 `Outage_Areas`) that serves the outage polygons behind the public Western Power outage tracker.
   x-apievangelist-provenance:
     method: derived
     derived_by: API Evangelist

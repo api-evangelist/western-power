@@ -1,0 +1,32 @@
+{
+  "provider": "western-power",
+  "sources": [
+    "_original/western-power-arcgis-outage-openapi.yml",
+    "_original/western-power-corporate-web-openapi.yml",
+    "_original/western-power-outage-openapi.yml"
+  ],
+  "outputs": [
+    "western-power-metadata-api-openapi.yml",
+    "western-power-query-api-openapi.yml",
+    "western-power-content-api-openapi.yml",
+    "western-power-search-api-openapi.yml",
+    "western-power-outages-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "sourced from openapi/_original/ (3 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "western-power-arcgis-outage-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "western-power-corporate-web-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "western-power-outage-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "western-power-content-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "western-power-metadata-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "western-power-outages-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "western-power-query-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "western-power-search-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
+}
