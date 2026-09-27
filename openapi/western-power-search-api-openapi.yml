@@ -66,19 +66,6 @@ paths:
                 $ref: '#/components/schemas/SearchResults'
 components:
   schemas:
-    SearchHit:
-      type: object
-      properties:
-        title:
-          type: string
-        description:
-          type: string
-        url:
-          type: string
-        badge:
-          type: string
-        additionalInformation:
-          type: string
     SearchResults:
       type: object
       properties:
@@ -104,3 +91,16 @@ components:
           description: Content-type facets with counts.
           items:
             type: object
+    SearchHit:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        url:
+          type: string
+        badge:
+          type: string
+        additionalInformation:
+          type: string

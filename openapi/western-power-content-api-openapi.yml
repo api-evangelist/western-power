@@ -91,6 +91,25 @@ paths:
                 $ref: '#/components/schemas/VacancyPage'
 components:
   schemas:
+    VacancyPage:
+      type: object
+      properties:
+        vacancies:
+          type: array
+          items:
+            $ref: '#/components/schemas/Vacancy'
+        pageSize:
+          type: integer
+        totalMatching:
+          type: integer
+        filterArray:
+          type: array
+          items:
+            type: object
+        sortingFilter:
+          type: array
+          items:
+            type: object
     Vacancy:
       type: object
       properties:
@@ -120,22 +139,3 @@ components:
           type: integer
         showFeaturedArticle:
           type: boolean
-    VacancyPage:
-      type: object
-      properties:
-        vacancies:
-          type: array
-          items:
-            $ref: '#/components/schemas/Vacancy'
-        pageSize:
-          type: integer
-        totalMatching:
-          type: integer
-        filterArray:
-          type: array
-          items:
-            type: object
-        sortingFilter:
-          type: array
-          items:
-            type: object

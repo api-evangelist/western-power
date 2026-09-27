@@ -95,56 +95,56 @@ paths:
                 $ref: '#/components/schemas/SuburbOutageStatus'
 components:
   schemas:
-    SuburbOutageStatus:
+    OutageSummary:
       type: object
+      description: One outage as plotted on the public outage map.
       properties:
-        errorMessage:
-          type:
-          - string
-          - 'null'
-          description: The only error channel this API exposes. Observed null on every probe; HTTP status stays 200 regardless of whether the suburb matched.
-        suburb:
-          type:
-          - string
-          - 'null'
-          description: Echo of the submitted suburb, title-cased.
-        inflightOutageCount:
-          type: integer
-        resolvedOutageCount:
-          type: integer
+        outageId:
+          type: string
+          description: Incident reference, e.g. `INCD-2015011-U`.
+        outageType:
+          type: string
+          description: Observed values `F` (planned/future works, 208 of 211 records on 2026-07-27) and `U` (unplanned, 3 records). Western Power publishes no code list; these are the only values seen.
+          examples:
+          - F
+          - U
+        startTime:
+          type: string
+          description: Outage start, basic-format ISO 8601 with AWST offset, e.g. `20260728T190000+08:00`.
+        restorationTime:
+          type: string
+          description: Estimated restoration, same format as `startTime`.
+        onMap:
+          type: boolean
+          description: Whether the outage is plotted on the public map.
+        outageUpdatedTime:
+          type: string
+          description: Last update, basic-format ISO 8601, observed in UTC (`+00:00`).
         affectedCustomers:
           type: integer
-        outageId:
-          type:
-          - string
-          - 'null'
-        restorationTimeFormatted:
-          type:
-          - string
-          - 'null'
-        restoredOutageId:
-          type:
-          - string
-          - 'null'
-        resolvedRestorationTimeFormatted:
-          type:
-          - string
-          - 'null'
-        plannedOutageCount:
-          type: integer
-        plannedOutageId:
-          type:
-          - string
-          - 'null'
-        plannedOutageTimeFormatted:
-          type:
-          - string
-          - 'null'
-          description: Human-readable sentence, e.g. "There are multiple planned outages in your area in the next ten days."
-        inflightPlannedOutageCount:
-          type: integer
-        inflightUnPlannedOutagesCount:
-          type: integer
+          description: Number of customers impacted.
+        areas:
+          type: array
+          description: Affected suburb / locality names, upper case.
+          items:
+            type: string
+        latitudeCentroid:
+          type: number
+          format: double
+        longitudeCentroid:
+          type: number
+          format: double
+      required:
+      - outageId
+      - outageType
+      - startTime
+      - restorationTime
+      - onMap
+      - outageUpdatedTime
+      - affectedCustomers
+      - areas
+      - latitudeCentroid
+      - longitudeCentroid
     OutageDetail:
       type: object
       description: '`OutageSummary` plus the presentation payload the tracker renders. Content fields carry HTML strings and may be null.'
@@ -206,53 +206,53 @@ components:
           type:
           - string
           - 'null'
-    OutageSummary:
+    SuburbOutageStatus:
       type: object
-      description: One outage as plotted on the public outage map.
       properties:
-        outageId:
-          type: string
-          description: Incident reference, e.g. `INCD-2015011-U`.
-        outageType:
-          type: string
-          description: Observed values `F` (planned/future works, 208 of 211 records on 2026-07-27) and `U` (unplanned, 3 records). Western Power publishes no code list; these are the only values seen.
-          examples:
-          - F
-          - U
-        startTime:
-          type: string
-          description: Outage start, basic-format ISO 8601 with AWST offset, e.g. `20260728T190000+08:00`.
-        restorationTime:
-          type: string
-          description: Estimated restoration, same format as `startTime`.
-        onMap:
-          type: boolean
-          description: Whether the outage is plotted on the public map.
-        outageUpdatedTime:
-          type: string
-          description: Last update, basic-format ISO 8601, observed in UTC (`+00:00`).
+        errorMessage:
+          type:
+          - string
+          - 'null'
+          description: The only error channel this API exposes. Observed null on every probe; HTTP status stays 200 regardless of whether the suburb matched.
+        suburb:
+          type:
+          - string
+          - 'null'
+          description: Echo of the submitted suburb, title-cased.
+        inflightOutageCount:
+          type: integer
+        resolvedOutageCount:
+          type: integer
         affectedCustomers:
           type: integer
-          description: Number of customers impacted.
-        areas:
-          type: array
-          description: Affected suburb / locality names, upper case.
-          items:
-            type: string
-        latitudeCentroid:
-          type: number
-          format: double
-        longitudeCentroid:
-          type: number
-          format: double
-      required:
-      - outageId
-      - outageType
-      - startTime
-      - restorationTime
-      - onMap
-      - outageUpdatedTime
-      - affectedCustomers
-      - areas
-      - latitudeCentroid
-      - longitudeCentroid
+        outageId:
+          type:
+          - string
+          - 'null'
+        restorationTimeFormatted:
+          type:
+          - string
+          - 'null'
+        restoredOutageId:
+          type:
+          - string
+          - 'null'
+        resolvedRestorationTimeFormatted:
+          type:
+          - string
+          - 'null'
+        plannedOutageCount:
+          type: integer
+        plannedOutageId:
+          type:
+          - string
+          - 'null'
+        plannedOutageTimeFormatted:
+          type:
+          - string
+          - 'null'
+          description: Human-readable sentence, e.g. "There are multiple planned outages in your area in the next ten days."
+        inflightPlannedOutageCount:
+          type: integer
+        inflightUnPlannedOutagesCount:
+          type: integer
