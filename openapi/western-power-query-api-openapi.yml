@@ -185,21 +185,6 @@ components:
           type:
           - number
           - 'null'
-    ArcGISError:
-      type: object
-      description: Esri error envelope, returned with HTTP 200.
-      properties:
-        error:
-          type: object
-          properties:
-            code:
-              type: integer
-            message:
-              type: string
-            details:
-              type: array
-              items:
-                type: string
     FeatureSet:
       type: object
       properties:
@@ -226,3 +211,18 @@ components:
                 $ref: '#/components/schemas/OutageAreaAttributes'
               geometry:
                 type: object
+    ArcGISError:
+      type: object
+      description: Esri error envelope, returned with HTTP 200.
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: integer
+            message:
+              type: string
+            details:
+              type: array
+              items:
+                type: string
