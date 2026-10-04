@@ -116,6 +116,32 @@ paths:
                 - $ref: '#/components/schemas/ArcGISError'
 components:
   schemas:
+    FeatureSet:
+      type: object
+      properties:
+        objectIdFieldName:
+          type: string
+        globalIdFieldName:
+          type: string
+        geometryType:
+          type: string
+        spatialReference:
+          type: object
+        fields:
+          type: array
+          items:
+            type: object
+        exceededTransferLimit:
+          type: boolean
+        features:
+          type: array
+          items:
+            type: object
+            properties:
+              attributes:
+                $ref: '#/components/schemas/OutageAreaAttributes'
+              geometry:
+                type: object
     OutageAreaAttributes:
       type: object
       description: Field list declared verbatim by layer 0 (Outage_Areas).
@@ -185,32 +211,6 @@ components:
           type:
           - number
           - 'null'
-    FeatureSet:
-      type: object
-      properties:
-        objectIdFieldName:
-          type: string
-        globalIdFieldName:
-          type: string
-        geometryType:
-          type: string
-        spatialReference:
-          type: object
-        fields:
-          type: array
-          items:
-            type: object
-        exceededTransferLimit:
-          type: boolean
-        features:
-          type: array
-          items:
-            type: object
-            properties:
-              attributes:
-                $ref: '#/components/schemas/OutageAreaAttributes'
-              geometry:
-                type: object
     ArcGISError:
       type: object
       description: Esri error envelope, returned with HTTP 200.

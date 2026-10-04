@@ -95,56 +95,6 @@ paths:
                 $ref: '#/components/schemas/SuburbOutageStatus'
 components:
   schemas:
-    SuburbOutageStatus:
-      type: object
-      properties:
-        errorMessage:
-          type:
-          - string
-          - 'null'
-          description: The only error channel this API exposes. Observed null on every probe; HTTP status stays 200 regardless of whether the suburb matched.
-        suburb:
-          type:
-          - string
-          - 'null'
-          description: Echo of the submitted suburb, title-cased.
-        inflightOutageCount:
-          type: integer
-        resolvedOutageCount:
-          type: integer
-        affectedCustomers:
-          type: integer
-        outageId:
-          type:
-          - string
-          - 'null'
-        restorationTimeFormatted:
-          type:
-          - string
-          - 'null'
-        restoredOutageId:
-          type:
-          - string
-          - 'null'
-        resolvedRestorationTimeFormatted:
-          type:
-          - string
-          - 'null'
-        plannedOutageCount:
-          type: integer
-        plannedOutageId:
-          type:
-          - string
-          - 'null'
-        plannedOutageTimeFormatted:
-          type:
-          - string
-          - 'null'
-          description: Human-readable sentence, e.g. "There are multiple planned outages in your area in the next ten days."
-        inflightPlannedOutageCount:
-          type: integer
-        inflightUnPlannedOutagesCount:
-          type: integer
     OutageDetail:
       type: object
       description: '`OutageSummary` plus the presentation payload the tracker renders. Content fields carry HTML strings and may be null.'
@@ -206,6 +156,56 @@ components:
           type:
           - string
           - 'null'
+    SuburbOutageStatus:
+      type: object
+      properties:
+        errorMessage:
+          type:
+          - string
+          - 'null'
+          description: The only error channel this API exposes. Observed null on every probe; HTTP status stays 200 regardless of whether the suburb matched.
+        suburb:
+          type:
+          - string
+          - 'null'
+          description: Echo of the submitted suburb, title-cased.
+        inflightOutageCount:
+          type: integer
+        resolvedOutageCount:
+          type: integer
+        affectedCustomers:
+          type: integer
+        outageId:
+          type:
+          - string
+          - 'null'
+        restorationTimeFormatted:
+          type:
+          - string
+          - 'null'
+        restoredOutageId:
+          type:
+          - string
+          - 'null'
+        resolvedRestorationTimeFormatted:
+          type:
+          - string
+          - 'null'
+        plannedOutageCount:
+          type: integer
+        plannedOutageId:
+          type:
+          - string
+          - 'null'
+        plannedOutageTimeFormatted:
+          type:
+          - string
+          - 'null'
+          description: Human-readable sentence, e.g. "There are multiple planned outages in your area in the next ten days."
+        inflightPlannedOutageCount:
+          type: integer
+        inflightUnPlannedOutagesCount:
+          type: integer
     OutageSummary:
       type: object
       description: One outage as plotted on the public outage map.
