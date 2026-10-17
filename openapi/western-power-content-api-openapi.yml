@@ -91,35 +91,6 @@ paths:
                 $ref: '#/components/schemas/VacancyPage'
 components:
   schemas:
-    Vacancy:
-      type: object
-      properties:
-        url:
-          type: string
-        roleName:
-          type: string
-        roleDescription:
-          type:
-          - string
-          - 'null'
-        location:
-          type: string
-        date:
-          type: string
-          format: date-time
-    NewsArticlePage:
-      type: object
-      properties:
-        newsArticles:
-          type: array
-          items:
-            type: object
-        pageSize:
-          type: integer
-        totalMatching:
-          type: integer
-        showFeaturedArticle:
-          type: boolean
     VacancyPage:
       type: object
       properties:
@@ -139,3 +110,32 @@ components:
           type: array
           items:
             type: object
+    NewsArticlePage:
+      type: object
+      properties:
+        newsArticles:
+          type: array
+          items:
+            type: object
+        pageSize:
+          type: integer
+        totalMatching:
+          type: integer
+        showFeaturedArticle:
+          type: boolean
+    Vacancy:
+      type: object
+      properties:
+        url:
+          type: string
+        roleName:
+          type: string
+        roleDescription:
+          type:
+          - string
+          - 'null'
+        location:
+          type: string
+        date:
+          type: string
+          format: date-time
